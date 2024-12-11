@@ -1,0 +1,155 @@
+classDiagram
+    class e_error {
+        <<enumeration>>
+        SUCCESS
+        ERR_ARGS
+        ERR_MALLOC
+        ERR_DATA
+        ERR_FILE
+        ERR_FORMAT
+        ERR_MLX
+        DEBUG
+    }
+
+    class e_app_state {
+        <<enumeration>>
+        STATE_KILL
+        STATE_INIT
+        STATE_RUNNING
+    }
+
+    class u_color {
+        <<union>>
+        +int ref
+        +unsigned char b
+        +unsigned char g
+        +unsigned char r
+        +unsigned char a
+        +set_color(r, g, b, a)
+        +get_hex()
+        +interpolate(color1, color2, factor)
+    }
+
+    class u_coord {
+        <<union>>
+        +int x
+        +int y
+        +int z
+        +int coords[3]
+        +set_coord(x, y, z)
+        +normalize()
+        +distance_to(coord)
+    }
+
+    class s_point {
+        +t_coord original_pos
+        +t_coord pos
+        +t_color color
+        +float elevation
+        +update_elevation(z)
+        +calculate_color()
+        +reset_position()
+        +transform(matrix)
+    }
+
+    class s_win {
+        +void* mlx
+        +void* win
+        +void* img
+        +void* addr
+        +int w_scr
+        +int h_scr
+        +int w_win
+        +int h_win
+        +int bbp
+        +int line_len
+        +int endian
+        +int mouse_x
+        +int mouse_y
+        +int mouse_pressed
+        +init_window()
+        +clear_window()
+        +put_pixel(x, y, color)
+        +draw_line(p1, p2)
+        +handle_mouse_event()
+        +handle_keyboard_event()
+        +refresh_display()
+    }
+
+    class s_map {
+        +t_point** points
+        +float z_min
+        +float z_max
+        +float z_range
+        +float z_scale
+        +float center_x
+        +float center_y
+        +int color_mode
+        +int is_iso
+        +int w_map
+        +int h_map
+        +load_map(filename)
+        +calculate_bounds()
+        +normalize_heights()
+        +apply_color_scheme()
+        +draw_map()
+        +cleanup_map()
+    }
+
+    class s_transform {
+        +float angle_x
+        +float angle_y
+        +float angle_z
+        +float scale
+        +float shift_x
+        +float shift_y
+        +float zoom
+        +float spacing
+        +float iso_angle
+        +int auto_rot
+        +rotate_x(angle)
+        +rotate_y(angle)
+        +rotate_z(angle)
+        +scale_points(factor)
+        +translate(x, y)
+        +toggle_auto_rotation()
+        +update_transform()
+    }
+
+    class s_app {
+        +t_map map
+        +t_win win
+        +t_transform transform
+        +e_app_state state
+        +int projection_mode
+        +float altitude_factor
+        +init_app()
+        +run_app()
+        +cleanup_app()
+        +handle_events()
+        +update_display()
+        +toggle_projection()
+    }
+
+    s_app *-- s_map
+    s_app *-- s_win
+    s_app *-- s_transform
+    s_app *-- e_app_state
+    s_map *-- s_point
+    s_point *-- u_coord
+    s_point *-- u_color
+
+    note for s_app "Hook points:
+    - Custom event handlers
+    - Additional rendering modes
+    - New projection types"
+
+    note for s_map "Hook points:
+    - Custom file formats
+    - New color schemes
+    - Height modifiers"
+
+    note for s_transform "Hook points:
+    - New transformation types
+    - Custom animations
+    - Matrix operations"
