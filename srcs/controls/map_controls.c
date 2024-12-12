@@ -6,13 +6,13 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 11:01:34 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 11:01:43 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/12 15:56:04 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fdf.h"
 
-static void	redraw_map(t_app *app);
+//static void	redraw_map(t_app *app);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -40,7 +40,8 @@ void	shift_map(t_app *app, int direction)
 		app->matrix.shift_x -= shift_step;
 	else if (direction == SHIFT_RIGHT)
 		app->matrix.shift_x += shift_step;
-	redraw_map(app);
+	render(app);
+	//redraw_map(app);
 }
 
 /* ************************************************************************** */
@@ -70,7 +71,8 @@ void	rotate_map(t_app *app, int direction)
 		app->matrix.angle_z -= 2 * M_PI;
 	while (app->matrix.angle_z < 0)
 		app->matrix.angle_z += 2 * M_PI;
-	redraw_map(app);
+	render(app);
+	//redraw_map(app);
 }
 
 /* ************************************************************************** */
@@ -87,12 +89,15 @@ void	rotate_map(t_app *app, int direction)
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
+/*
 static void	redraw_map(t_app *app)
 {
 	if (app->state == STATE_RUNNING)
 	{
-		ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
+		draw_sidebar(app);
 		draw_map(app);
 		mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
+		draw_sidebar_content(app);
 	}
 }
+*/

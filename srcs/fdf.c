@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:58:05 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 10:03:34 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/12 16:00:15 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,8 @@ int	main(int ac, char **av)
 	error = init_app(&app, filename);
 	if (error != SUCCESS)
 		return (cleanup_app(&app), error);
-	while (app.state == STATE_RUNNING)
-	{
-		mlx_loop_hook(app.win.mlx, render, &app);
-		mlx_loop(app.win.mlx);
-	}
+	mlx_loop_hook(app.win.mlx, render, &app);
+	mlx_loop(app.win.mlx);
 	return (cleanup_app(&app), SUCCESS);
 }
 

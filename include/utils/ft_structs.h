@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:32:26 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/10 03:30:34 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/12 17:37:24 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,14 @@ typedef struct s_sidebar
 	int		height;
 	char	**options;
 	int		selected;
+	struct
+	{
+		float	last_zoom;
+		float	last_altitude;
+		int		last_projection;
+		float	last_angle_z;
+		int		needs_update;
+	};
 }	t_sidebar;
 
 /* ************************************************************************** */

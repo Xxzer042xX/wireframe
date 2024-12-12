@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 23:46:16 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/10 21:41:45 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/12 15:11:50 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,4 +130,5 @@ static void	apply_transformations(t_point *point, t_app *app)
 	point->pos.y += app->win.h_win / 2;
 	point->pos.x -= (app->map.w_map * app->matrix.zoom * app->matrix.space) / 2;
 	point->pos.y -= (app->map.h_map * app->matrix.zoom * app->matrix.space) / 2;
+	point->pos.x += app->sidebar.width;
 }

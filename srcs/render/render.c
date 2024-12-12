@@ -6,11 +6,13 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 00:29:19 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/10 22:16:09 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/12 16:19:46 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fdf.h"
+
+static void	render_sidebar_text(t_app *app);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -34,6 +36,11 @@ int	render(t_app *app)
 	draw_sidebar(app);
 	draw_map(app);
 	mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
-	draw_sidebar_content(app);
+	render_sidebar_text(app);
 	return (SUCCESS);
+}
+
+static void	render_sidebar_text(t_app *app)
+{
+
 }
