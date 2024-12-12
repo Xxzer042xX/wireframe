@@ -35,12 +35,23 @@ int	render(t_app *app)
 	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
 	draw_sidebar(app);
 	draw_map(app);
+
 	mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
-	render_sidebar_text(app);
+		render_sidebar_text(app);
 	return (SUCCESS);
 }
 
 static void	render_sidebar_text(t_app *app)
 {
-
+	if (app->matrix.zoom != app->sidebar.state.last_zoom || \
+		app->altitude_factor != app->sidebar.state.last_altitude || \
+		app->projection_mode != app->sidebar.state.last_projection || \
+		app->matrix.angle_z != app->sidebar.state.last_angle_z)
+	{
+		app->sidebar.state.last_zoom = app->matrix.zoom;
+		app->sidebar.state.last_altitude = app->altitude_factor;
+		app->sidebar.state.last_projection = app->projection_mode;
+		app->sidebar.state.last_angle_z = app->matrix.angle_z;
+		draw_sidebar_content(app);
+	}
 }

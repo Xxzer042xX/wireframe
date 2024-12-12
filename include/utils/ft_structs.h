@@ -83,20 +83,23 @@ typedef union u_coord
 /* ************************************************************************** */
 /*                              SIDEBAR STRUCTURE                             */
 /* ************************************************************************** */
+typedef struct s_state
+{
+	float	last_zoom;
+	float	last_altitude;
+	int		last_projection;
+	float	last_angle_z;
+	int		needs_update;
+}	t_state;
+
 typedef struct s_sidebar
 {
+	t_state	state;
 	int		width;
 	int		height;
 	char	**options;
 	int		selected;
-	struct
-	{
-		float	last_zoom;
-		float	last_altitude;
-		int		last_projection;
-		float	last_angle_z;
-		int		needs_update;
-	};
+
 }	t_sidebar;
 
 /* ************************************************************************** */
