@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:39:56 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 10:29:48 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/11 18:49:38 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 /*                              DEFAULT COLOR                                 */
 /* ************************************************************************** */
 # define COLOR_GRID 0xFFFFFF
+# define COLOR_MENU 0xFFFFFF
 
 /* ************************************************************************** */
 /*                              OWN LIB                                       */
@@ -88,7 +89,7 @@ void		toggle_window_size(t_app *app);
 void		zoom(t_app *app, float factor);
 void		shift_map(t_app *app, int direction);
 void		rotate_map(t_app *app, int direction);
-void        put_pixel(t_app *app, int x, int y, int color);
+void		put_pixel(t_app *app, int x, int y, int color);
 /* ************************************************************************** */
 /*                              PARSING                                       */
 /* ************************************************************************** */

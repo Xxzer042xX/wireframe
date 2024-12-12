@@ -6,9 +6,11 @@
 /*   By: mdelmeni <eljok87@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 14:59:31 by mdelmeni          #+#    #+#             */
-/*   Updated: 2024/12/11 14:59:31 by mdelmeni         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:15:26 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/fdf.h"
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -25,9 +27,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/fdf.h"
-
-static void	put_pixel(t_app *app, int x, int y, int color)
+void	put_pixel(t_app *app, int x, int y, int color)
 {
 	char	*dst;
 
