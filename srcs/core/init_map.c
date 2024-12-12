@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 11:33:36 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 10:30:02 by madelmen         ###   LAUSANNE.ch       */
+/*   Created: 2024/12/12 09:12:35 by madelmen          #+#    #+#             */
+/*   Updated: 2024/12/12 09:12:35 by madelmen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,29 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction initialise l'ensemble de l'application FdF.               */
-/*   configure la matrice initiale des transformations.                       */
-/*   Elle procède ensuite au parsing des données du fichier(init_map),        */
-/*   initialise la connexion MLX et configure les événements.                 */
-/*   Et definis le status machine  RUNNING.                                   */
+/*   Cette fonction gère le parsing principal du fichier de données FdF.      */
+/*   Elle compte d'abord le nombre de lignes, alloue l'espace mémoire         */
+/*   nécessaire pour stocker les points de la carte, puis lance le parsing    */
+/*   complet du fichier.                                                      */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
-/*   - ac : nombre d'arguments reçus                                          */
-/*   - filename : chemin vers le fichier à traiter                            */
+/*   - filename : nom du fichier à parser                                     */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si l'initialisation est réussie                                */
-/*   - Code d'erreur approprié si une étape échoue                            */
+/*   - SUCCESS si le parsing est réussi                                       */
+/*   - ERR_FILE en cas d'erreur de lecture                                    */
+/*   - ERR_MALLOC en cas d'échec d'allocation                                 */
 /*                                                                            */
 /* ************************************************************************** */
-int	init_app(t_app *app, char *filename)
+int	init_map(t_app *app, char *filename)
 {
-	int	status;
-
-	status = init_map(app, filename);
-	if (status != SUCCESS)
-		return (error_exit(status));
-	status = init_mlx(app);
-	if (status != SUCCESS)
-		return (error_exit(status));
-	status = init_event(app);
-	if (status != SUCCESS)
-		return (error_exit(status));
-	init_matrix(app);
-	init_sidebar(app);
-	app->state = STATE_RUNNING;
+	if (count_line(app, filename) != SUCCESS)
+		return (ERR_FILE);
+	app->map.points = malloc(sizeof(t_point *) * app->map.h_map);
+	if (!app->map.points)
+		return (ERR_MALLOC);
+	if (parse_file(app, filename) != SUCCESS)
+		return (ERR_FILE);
 	return (SUCCESS);
 }
-
-
-
-
-
-

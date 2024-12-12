@@ -21,16 +21,22 @@
 /* ************************************************************************** */
 /*                              DEFAULT VALUES                                */
 /* ************************************************************************** */
+//zoom
 # define Z_OUT 0.8f
 # define Z_IN 1.2f
+
+//shift_map
 # define SHIFT_STEP 10.0f
 # define ROT_STEP 0.1f
 
+//sidebar_content
+# define PADDING 20
 /* ************************************************************************** */
 /*                              DEFAULT COLOR                                 */
 /* ************************************************************************** */
 # define COLOR_GRID 0xFFFFFF
 # define COLOR_MENU 0xFFFFFF
+# define TEXT_COLOR 0x000000
 
 /* ************************************************************************** */
 /*                              OWN LIB                                       */
@@ -62,6 +68,10 @@
 /*                              CORE                                          */
 /* ************************************************************************** */
 int			init_app(t_app *app, char *filename);
+int			init_map(t_app *app, char *filename);
+int			init_mlx(t_app *app);
+void		init_matrix(t_app *app);
+void		init_sidebar(t_app *app);
 void		cleanup_app(t_app *app);
 
 /* ************************************************************************** */
@@ -83,6 +93,7 @@ void		shift_map(t_app *app, int direction);
 t_point		matrix(t_app *app, int x, int y);
 int			render(t_app *app);
 void		draw_map(t_app *app);
+void		draw_sidebar(t_app *app);
 void		draw_line(t_app *app, t_point start, t_point end);
 void		toggle_view(t_app *app);
 void		toggle_window_size(t_app *app);
@@ -90,6 +101,9 @@ void		zoom(t_app *app, float factor);
 void		shift_map(t_app *app, int direction);
 void		rotate_map(t_app *app, int direction);
 void		put_pixel(t_app *app, int x, int y, int color);
+void		draw_sidebar_content(t_app *app);
+void		draw_sidebar(t_app *app);
+
 /* ************************************************************************** */
 /*                              PARSING                                       */
 /* ************************************************************************** */

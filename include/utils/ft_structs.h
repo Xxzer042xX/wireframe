@@ -81,6 +81,17 @@ typedef union u_coord
 }	t_coord;
 
 /* ************************************************************************** */
+/*                              SIDEBAR STRUCTURE                             */
+/* ************************************************************************** */
+typedef struct s_sidebar
+{
+	int		width;
+	int		height;
+	char	**options;
+	int		selected;
+}	t_sidebar;
+
+/* ************************************************************************** */
 /*                                POINT STRUCTURE                             */
 /* ************************************************************************** */
 typedef struct s_rot_point
@@ -166,6 +177,7 @@ typedef struct s_app
 	t_map				map;
 	t_win				win;
 	t_matrix			matrix;
+	t_sidebar			sidebar;
 	enum e_app_state	state;
 	enum e_shift_dir	shift_dir;
 	enum e_rot_dir		rot_dir;

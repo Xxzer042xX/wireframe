@@ -59,7 +59,9 @@ static void	resize_window(t_app *app, int new_width, int new_height)
 	app->win.img = mlx_new_image(app->win.mlx, app->win.w_win, app->win.h_win);
 	app->win.addr = mlx_get_data_addr(app->win.img, &app->win.bbp, \
 								&app->win.line_len, &app->win.endian);
+	app->sidebar.width = new_width / 4;
+	app->sidebar.height = new_height;
 	init_event(app);
-	draw_map(app);
-	mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
+	//draw_map(app);
+	//mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
 }
