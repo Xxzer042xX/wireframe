@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:39:56 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 18:49:38 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 08:21:57 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define Z_IN 1.2f
 
 //shift_map
-# define SHIFT_STEP 10.0f
+# define SHIFT_ST5P 10.0f
 # define ROT_STEP 0.1f
 
 //sidebar_content

@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:33:36 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 10:30:02 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 09:23:00 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,8 @@ int	init_app(t_app *app, char *filename)
 		return (error_exit(status));
 	init_matrix(app);
 	init_sidebar(app);
+	app->needs_update = 1;
 	app->state = STATE_RUNNING;
+	toggle_view(app);
 	return (SUCCESS);
 }
-
-
-
-
-
-

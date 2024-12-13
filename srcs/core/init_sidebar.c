@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 09:18:36 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/12 09:18:36 by madelmen         ###   ########.fr       */
+/*   Updated: 2024/12/13 09:17:09 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,4 @@ void	init_sidebar(t_app *app)
 {
 	app->sidebar.width = app->win.w_win / 4;
 	app->sidebar.height = app->win.h_win;
-	app->sidebar.state.last_zoom = -1;
-	app->sidebar.state.last_altitude = -1;
-	app->sidebar.state.last_projection = -1;
-	app->sidebar.state.last_angle_z = -1;
-	app->sidebar.state.needs_update = 1;
 }

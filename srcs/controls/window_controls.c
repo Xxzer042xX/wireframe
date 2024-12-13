@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 23:44:49 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/10 21:43:59 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 09:09:04 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ static void	resize_window(t_app *app, int new_width, int new_height)
 	app->sidebar.width = new_width / 4;
 	app->sidebar.height = new_height;
 	init_event(app);
-	//draw_map(app);
-	//mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
+	app->needs_update = 1;
+	render(app);
 }

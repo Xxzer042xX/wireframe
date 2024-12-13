@@ -6,13 +6,13 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 00:29:19 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/12 16:19:46 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 09:38:24 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fdf.h"
 
-static void	render_sidebar_text(t_app *app);
+//static void	render_sidebar_text(t_app *app);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -32,26 +32,12 @@ int	render(t_app *app)
 {
 	if (app->state == STATE_KILL)
 		mlx_loop_end(app->win.mlx);
-	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
-	draw_sidebar(app);
+	if (!app->needs_update)
+		return (SUCCESS);
 	draw_map(app);
-
+	draw_sidebar(app);
 	mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
-		render_sidebar_text(app);
+	draw_sidebar_content(app);
+	app->needs_update = 0;
 	return (SUCCESS);
-}
-
-static void	render_sidebar_text(t_app *app)
-{
-	if (app->matrix.zoom != app->sidebar.state.last_zoom || \
-		app->altitude_factor != app->sidebar.state.last_altitude || \
-		app->projection_mode != app->sidebar.state.last_projection || \
-		app->matrix.angle_z != app->sidebar.state.last_angle_z)
-	{
-		app->sidebar.state.last_zoom = app->matrix.zoom;
-		app->sidebar.state.last_altitude = app->altitude_factor;
-		app->sidebar.state.last_projection = app->projection_mode;
-		app->sidebar.state.last_angle_z = app->matrix.angle_z;
-		draw_sidebar_content(app);
-	}
 }

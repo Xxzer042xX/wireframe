@@ -6,13 +6,11 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 11:01:34 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/12 15:56:04 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 09:07:43 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fdf.h"
-
-//static void	redraw_map(t_app *app);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -40,8 +38,9 @@ void	shift_map(t_app *app, int direction)
 		app->matrix.shift_x -= shift_step;
 	else if (direction == SHIFT_RIGHT)
 		app->matrix.shift_x += shift_step;
+	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
+	app->needs_update = 1;
 	render(app);
-	//redraw_map(app);
 }
 
 /* ************************************************************************** */
@@ -71,33 +70,7 @@ void	rotate_map(t_app *app, int direction)
 		app->matrix.angle_z -= 2 * M_PI;
 	while (app->matrix.angle_z < 0)
 		app->matrix.angle_z += 2 * M_PI;
+	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
+	app->needs_update = 1;
 	render(app);
-	//redraw_map(app);
 }
-
-/* ************************************************************************** */
-/*                                                                            */
-/*   Cette fonction rafraîchit l'affichage de la carte.                       */
-/*   Elle efface d'abord le contenu de l'image en la remplissant de noir,     */
-/*   redessine la carte complète, puis met à jour l'affichage de la fenêtre.  */
-/*   Cette opération n'est effectuée que si l'application est en cours        */
-/*   d'exécution (STATE_RUNNING).                                             */
-/*                                                                            */
-/*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*                                                                            */
-/*   Ne retourne rien (void)                                                  */
-/*                                                                            */
-/* ************************************************************************** */
-/*
-static void	redraw_map(t_app *app)
-{
-	if (app->state == STATE_RUNNING)
-	{
-		draw_sidebar(app);
-		draw_map(app);
-		mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
-		draw_sidebar_content(app);
-	}
-}
-*/

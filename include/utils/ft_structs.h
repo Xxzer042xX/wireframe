@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:32:26 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/12 17:37:24 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 09:06:07 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,8 @@ typedef union u_coord
 /* ************************************************************************** */
 /*                              SIDEBAR STRUCTURE                             */
 /* ************************************************************************** */
-typedef struct s_state
-{
-	float	last_zoom;
-	float	last_altitude;
-	int		last_projection;
-	float	last_angle_z;
-	int		needs_update;
-}	t_state;
-
 typedef struct s_sidebar
 {
-	t_state	state;
 	int		width;
 	int		height;
 	char	**options;
@@ -193,6 +183,7 @@ typedef struct s_app
 	enum e_shift_dir	shift_dir;
 	enum e_rot_dir		rot_dir;
 	int					projection_mode;
+	int					needs_update;
 	float				altitude_factor;
 }	t_app;
 
