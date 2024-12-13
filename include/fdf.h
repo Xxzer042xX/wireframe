@@ -21,9 +21,18 @@
 /* ************************************************************************** */
 /*                              DEFAULT VALUES                                */
 /* ************************************************************************** */
+
+//matrix
+# define SPACE 30.0f
+# define ISO_ANGLE 0.523599f
+
 //zoom
 # define Z_OUT 0.8f
 # define Z_IN 1.2f
+# define Z_DEFAULT 0.4f
+
+//rotation
+# define ROT_STEP 0.1f
 
 //shift_map
 # define SHIFT_ST5P 10.0f
@@ -31,6 +40,13 @@
 
 //sidebar_content
 # define PADDING 20
+
+//window
+# define INIT_WIN_W 640
+# define INIT_WIN_H 360
+# define MAX_WIN_W 5120
+# define MAX_WIN_H 1440
+
 /* ************************************************************************** */
 /*                              DEFAULT COLOR                                 */
 /* ************************************************************************** */
@@ -70,6 +86,7 @@
 int			init_app(t_app *app, char *filename);
 int			init_map(t_app *app, char *filename);
 int			init_mlx(t_app *app);
+int			init_event(t_app *app);
 void		init_matrix(t_app *app);
 void		init_sidebar(t_app *app);
 void		cleanup_app(t_app *app);
@@ -79,7 +96,7 @@ void		cleanup_app(t_app *app);
 /* ************************************************************************** */
 int			handle_exit(t_app *app);
 int			handle_key(int keycode, void *param);
-int			init_event(t_app *app);
+int			handle_mouse(int button, int x, int y, void *param);
 
 /* ************************************************************************** */
 /*                              MAP CONTROLS                                  */
@@ -92,11 +109,11 @@ void		shift_map(t_app *app, int direction);
 /* ************************************************************************** */
 t_point		matrix(t_app *app, int x, int y);
 int			render(t_app *app);
+int			toggle_window_size(t_app *app);
 void		draw_map(t_app *app);
 void		draw_sidebar(t_app *app);
 void		draw_line(t_app *app, t_point start, t_point end);
 void		toggle_view(t_app *app);
-void		toggle_window_size(t_app *app);
 void		zoom(t_app *app, float factor);
 void		shift_map(t_app *app, int direction);
 void		rotate_map(t_app *app, int direction);

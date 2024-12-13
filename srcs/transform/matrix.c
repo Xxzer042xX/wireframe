@@ -130,5 +130,5 @@ static void	apply_transformations(t_point *point, t_app *app)
 	point->pos.y += app->win.h_win / 2;
 	point->pos.x -= (app->map.w_map * app->matrix.zoom * app->matrix.space) / 2;
 	point->pos.y -= (app->map.h_map * app->matrix.zoom * app->matrix.space) / 2;
-	point->pos.x += app->sidebar.width;
+	point->pos.x += app->sidebar.width + 40;
 }

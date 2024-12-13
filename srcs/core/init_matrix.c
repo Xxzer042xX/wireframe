@@ -27,8 +27,8 @@
 /* ************************************************************************** */
 void	init_matrix(t_app *app)
 {
-	app->matrix.space = 30.0f;
-	app->matrix.iso_angle = 0.523599f;
-	app->matrix.zoom = 0.5f;
+	app->matrix.space = SPACE;
+	app->matrix.iso_angle = ISO_ANGLE;
+	app->matrix.zoom = Z_DEFAULT;
 	app->matrix.scale = 1;
 }

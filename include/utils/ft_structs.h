@@ -166,6 +166,8 @@ typedef struct s_matrix
 	float	zoom;
 	float	space;
 	float	iso_angle;
+	float 	center_x;
+	float	center_y;
 	int		auto_rot;
 }	t_matrix;
 

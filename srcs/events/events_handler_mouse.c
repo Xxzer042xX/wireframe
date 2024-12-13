@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_event.c                                       :+:      :+:    :+:   */
+/*   events_handler_mouse.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/12 09:12:53 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/13 10:06:17 by madelmen         ###   LAUSANNE.ch       */
+/*   Created: 2024/12/13 13:59:03 by madelmen          #+#    #+#             */
+/*   Updated: 2024/12/13 13:59:03 by madelmen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,29 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction initialise la gestion des événements de l'application.    */
-/*   Elle configure les hooks MLX pour gérer les événements clavier et la     */
-/*   fermeture de la fenêtre via la croix. Elle assure la liaison entre       */
-/*   les événements utilisateur et les fonctions de traitement.               */
+/*   Cette fonction gère les événements de la souris.                         */
+/*   Elle traite la molette de souris pour le zoom : molette vers le haut    */
+/*   pour zoomer (Z_IN) et vers le bas pour dézoomer (Z_OUT).                */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
+/*   - button : identifiant du bouton/action de la souris                    */
+/*   - x : position x du curseur                                             */
+/*   - y : position y du curseur                                             */
+/*   - param : pointeur vers la structure principale de l'application        */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si l'initialisation est réussie                                */
-/*   - ERR_MLX si l'initialisation des hooks échoue                           */
+/*   - SUCCESS dans tous les cas                                             */
 /*                                                                            */
 /* ************************************************************************** */
-int	init_event(t_app *app)
+int	handle_mouse(int button, int x, int y, void *param)
 {
-	if (mlx_hook(app->win.win, 2, 1L << 0, handle_key, (void *)app) == -1)
-		return (error_exit(ERR_MLX));
-	if (mlx_mouse_hook(app->win.win, handle_mouse, app) == -1)
-		return (error_exit(ERR_MLX));
-	if (mlx_hook(app->win.win, 17, 1L << 17, handle_exit, app) == -1)
-		return (error_exit(ERR_MLX));
-	if (mlx_hook(app->win.win, 25, 1L << 18, toggle_window_size, app) == -1)
-		return (error_exit(ERR_MLX));
+	t_app	*app;
+
+	app = (t_app *)param;
+	ft_printf("Button: %d, x: %d, y: %d\n", button, x, y);
+	if (button == SCROLL_UP)
+		zoom(app, Z_IN);
+	if (button == SCROLL_DOWN)
+		zoom(app, Z_OUT);
 	return (SUCCESS);
 }

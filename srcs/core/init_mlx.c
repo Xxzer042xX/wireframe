@@ -34,8 +34,8 @@ int	init_mlx(t_app *app)
 	if (!app->win.mlx)
 		return (ERR_MLX);
 	mlx_get_screen_size(app->win.mlx, &app->win.w_scr, &app->win.h_scr);
-	app->win.w_win = 640;
-	app->win.h_win = 360;
+	app->win.w_win = INIT_WIN_W;
+	app->win.h_win = INIT_WIN_H;
 	app->win.win = mlx_new_window(app->win.mlx, \
 									app->win.w_win, app->win.h_win, TITLE);
 	if (!app->win.win)

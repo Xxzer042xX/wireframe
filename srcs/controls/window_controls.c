@@ -26,12 +26,13 @@ static void	resize_window(t_app *app, int new_width, int new_height);
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-void	toggle_window_size(t_app *app)
+int	toggle_window_size(t_app *app)
 {
-	if (app->win.w_win == app->win.w_scr)
-		resize_window(app, app->win.w_scr / 2, app->win.h_scr / 2);
+	if (app->win.w_win == INIT_WIN_W && app->win.h_win == INIT_WIN_H)
+		resize_window(app, MAX_WIN_W, MAX_WIN_H);
 	else
-		resize_window(app, app->win.w_scr, app->win.h_scr);
+		resize_window(app, INIT_WIN_W, INIT_WIN_H);
+	return (SUCCESS);
 }
 
 /* ************************************************************************** */

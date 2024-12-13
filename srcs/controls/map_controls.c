@@ -60,12 +60,10 @@ void	shift_map(t_app *app, int direction)
 /* ************************************************************************** */
 void	rotate_map(t_app *app, int direction)
 {
-	const float	rot_step = 0.1f;
-
 	if (direction == ROT_LEFT)
-		app->matrix.angle_z -= rot_step;
+		app->matrix.angle_z -= ROT_STEP;
 	else if (direction == ROT_RIGHT)
-		app->matrix.angle_z += rot_step;
+		app->matrix.angle_z += ROT_STEP;
 	while (app->matrix.angle_z >= 2 * M_PI)
 		app->matrix.angle_z -= 2 * M_PI;
 	while (app->matrix.angle_z < 0)
