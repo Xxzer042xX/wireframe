@@ -113,7 +113,7 @@ int			toggle_window_size(t_app *app);
 void		draw_map(t_app *app);
 void		draw_sidebar(t_app *app);
 void		draw_line(t_app *app, t_point start, t_point end);
-void		toggle_view(t_app *app);
+void		toggle_view(t_app *app, int views_mode);
 void		zoom(t_app *app, float factor);
 void		shift_map(t_app *app, int direction);
 void		rotate_map(t_app *app, int direction);

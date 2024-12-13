@@ -30,10 +30,21 @@ enum e_rot_dir
 	ROT_RIGHT
 };
 
+
+
+/* ************************************************************************** */
+/*                                VIEWS ENUMS                                 */
+/* ************************************************************************** */
+enum e_view_mode
+{
+	VIEW_ISO,
+	VIEW_TOP,
+	VIEW_SIDE
+};
+
 /* ************************************************************************** */
 /*                                ERROR AND STATE ENUMS                       */
 /* ************************************************************************** */
-
 enum e_error
 {
 	SUCCESS,
@@ -138,17 +149,17 @@ typedef struct s_win
 
 typedef struct s_map
 {
-	t_point	**points;
-	float	z_min;
-	float	z_max;
-	float	z_range;
-	float	z_scale;
-	float	center_x;
-	float	center_y;
-	int		color_mode;
-	int		is_iso;
-	int		w_map;
-	int		h_map;
+	t_point				**points;
+	enum e_view_mode	view_mode;
+	float				z_min;
+	float				z_max;
+	float				z_range;
+	float				z_scale;
+	float				center_x;
+	float				center_y;
+	int					color_mode;
+	int					w_map;
+	int					h_map;
 }	t_map;
 
 /* ************************************************************************** */

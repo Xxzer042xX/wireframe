@@ -37,8 +37,8 @@ int	handle_key(int keycode, void *param)
 	app = (t_app *)param;
 	if (keycode == KEY_ESC)
 		return (handle_exit(app));
-	if (keycode == KEY_V || keycode == KEY_F || \
-		keycode == KEY_PLUS || keycode == KEY_MINUS)
+	if (keycode == KEY_F || keycode == KEY_PLUS || keycode == KEY_MINUS || \
+		keycode == KEY_F1 || keycode == KEY_F2 || keycode == KEY_F3)
 		handle_view(app, keycode);
 	else if (keycode == KEY_W || keycode == KEY_S || \
 			keycode == KEY_A || keycode == KEY_D || \
@@ -80,8 +80,13 @@ int	handle_exit(t_app *app)
 /* ************************************************************************** */
 static void	handle_view(t_app *app, int keycode)
 {
-	if (keycode == KEY_V)
-		toggle_view(app);
+	ft_printf("keycode = %d\n", keycode);
+	if (keycode == KEY_F1)
+		toggle_view(app, VIEW_ISO);
+	if (keycode == KEY_F2)
+		toggle_view(app, VIEW_TOP);
+	if (keycode == KEY_F3)
+		toggle_view(app, VIEW_SIDE);
 	if (keycode == KEY_F)
 		toggle_window_size(app);
 	if (keycode == KEY_PLUS)

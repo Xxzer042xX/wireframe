@@ -26,9 +26,9 @@
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-void	toggle_view(t_app *app)
+void	toggle_view(t_app *app, int views_mode)
 {
-	app->map.is_iso = !app->map.is_iso;
+	app->map.view_mode = views_mode;
 	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
 	app->needs_update = 1;
 	render(app);
