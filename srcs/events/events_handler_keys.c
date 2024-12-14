@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 10:24:18 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 10:25:33 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 21:27:29 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	handle_key(int keycode, void *param)
 	t_app	*app;
 
 	app = (t_app *)param;
+	ft_printf("Keycode: %d\n", keycode);
 	if (keycode == KEY_ESC)
 		return (handle_exit(app));
 	if (keycode == KEY_F || keycode == KEY_PLUS || keycode == KEY_MINUS || \
@@ -42,7 +43,8 @@ int	handle_key(int keycode, void *param)
 		handle_view(app, keycode);
 	else if (keycode == KEY_W || keycode == KEY_S || \
 			keycode == KEY_A || keycode == KEY_D || \
-			keycode == KEY_Q || keycode == KEY_E)
+			keycode == KEY_Q || keycode == KEY_E || \
+			keycode == KEY_Y || keycode == KEY_C)
 		handle_move(app, keycode);
 	return (SUCCESS);
 }
@@ -122,4 +124,8 @@ static void	handle_move(t_app *app, int keycode)
 		rotate_map(app, ROT_LEFT);
 	if (keycode == KEY_E)
 		rotate_map(app, ROT_RIGHT);
+	if (keycode == KEY_Y)
+		scale_map(app, SCALE_INCREASE);
+	if (keycode == KEY_C)
+		scale_map(app, SCALE_DECREASE);
 }

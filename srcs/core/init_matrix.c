@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 09:12:28 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/12 09:12:28 by madelmen         ###   ########.fr       */
+/*   Updated: 2024/12/13 20:33:16 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void	init_matrix(t_app *app)
 	app->matrix.space = SPACE;
 	app->matrix.iso_angle = ISO_ANGLE;
 	app->matrix.zoom = Z_DEFAULT;
-	app->matrix.scale = 1;
+	app->matrix.scale = SCALE;
 }

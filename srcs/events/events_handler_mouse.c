@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 13:59:03 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/13 13:59:03 by madelmen         ###   ########.fr       */
+/*   Updated: 2024/12/13 21:09:43 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@
 /*   - SUCCESS dans tous les cas                                             */
 /*                                                                            */
 /* ************************************************************************** */
-int	handle_mouse(int button, int x, int y, void *param)
+int	handle_mouse(int keycode, int x, int y, void *param)
 {
 	t_app	*app;
 
 	app = (t_app *)param;
-	ft_printf("Button: %d, x: %d, y: %d\n", button, x, y);
-	if (button == SCROLL_UP)
+	ft_printf("Keycode: %d, x: %d, y: %d\n", keycode, x, y);
+	if (keycode == SCROLL_UP)
 		zoom(app, Z_IN);
-	if (button == SCROLL_DOWN)
+	if (keycode == SCROLL_DOWN)
 		zoom(app, Z_OUT);
 	return (SUCCESS);
 }

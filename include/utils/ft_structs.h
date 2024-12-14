@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:32:26 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/13 09:06:07 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 20:56:16 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_STRUCTS_H
 
 /* ************************************************************************** */
-/*                         ROTATION AND SHIFT MAP ENUMS                       */
+/*                         ROTATION, SCALE AND SHIFT MAP ENUMS                       */
 /* ************************************************************************** */
 enum e_shift_dir
 {
@@ -30,7 +30,11 @@ enum e_rot_dir
 	ROT_RIGHT
 };
 
-
+enum e_scale
+{
+	SCALE_INCREASE,
+	SCALE_DECREASE
+};
 
 /* ************************************************************************** */
 /*                                VIEWS ENUMS                                 */
@@ -177,7 +181,7 @@ typedef struct s_matrix
 	float	zoom;
 	float	space;
 	float	iso_angle;
-	float 	center_x;
+	float	center_x;
 	float	center_y;
 	int		auto_rot;
 }	t_matrix;
@@ -195,6 +199,7 @@ typedef struct s_app
 	enum e_app_state	state;
 	enum e_shift_dir	shift_dir;
 	enum e_rot_dir		rot_dir;
+	enum e_scale		scale;
 	int					projection_mode;
 	int					needs_update;
 	float				altitude_factor;

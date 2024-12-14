@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:18:40 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/10 03:58:00 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 21:03:51 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 //rotation
 # define KEY_Q			113
 # define KEY_E			101
+
+//scale
+# define KEY_Y			121
+# define KEY_C			99
 
 /* ************************************************************************** */
 /*                                Mouse                                       */

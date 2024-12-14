@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 23:46:16 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/12 15:11:50 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/13 20:31:47 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ static t_rot_point	get_proj_coords(t_app *app, int grid_x, int grid_y, int z)
 /* ************************************************************************** */
 static void	apply_transformations(t_point *point, t_app *app)
 {
+	point->pos.x *= app->matrix.scale;
+	point->pos.y *= app->matrix.scale;
 	point->pos.x *= app->matrix.zoom;
 	point->pos.y *= app->matrix.zoom;
 	point->pos.x += app->matrix.shift_x;
