@@ -42,6 +42,7 @@
 # define KEY_E			101
 
 //scale
+# define KEY_Z			122
 # define KEY_Y			121
 # define KEY_C			99
 

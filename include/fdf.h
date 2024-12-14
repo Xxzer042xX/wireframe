@@ -24,7 +24,7 @@
 //matrix
 # define SCALE 50.0f
 # define SCALE_STEP 0.25f
-# define SPACE 20.0f
+# define SPACE 100.0f
 # define ISO_ANGLE 0.523599f
 
 //zoom
@@ -40,7 +40,12 @@
 # define ROT_STEP 0.1f
 
 //sidebar_content
-# define PADDING 20
+# define PADDING_X 20
+# define PADDING_Y 40
+# define PADDING_OF_X 100
+# define PADDING_OF_Y 40
+# define SPACE_TITLE 40
+# define SPACE_CTRL 20
 
 //window
 # define INIT_WIN_W 640
@@ -88,8 +93,8 @@ int			init_app(t_app *app, char *filename);
 int			init_map(t_app *app, char *filename);
 int			init_mlx(t_app *app);
 int			init_event(t_app *app);
+int			init_data_sidebar(t_app *app);
 void		init_matrix(t_app *app);
-void		init_sidebar(t_app *app);
 void		cleanup_app(t_app *app);
 
 /* ************************************************************************** */
@@ -134,8 +139,12 @@ void		draw_map(t_app *app);
 void		draw_sidebar(t_app *app);
 void		draw_line(t_app *app, t_point start, t_point end);
 void		put_pixel(t_app *app, int x, int y, int color);
-void		draw_sidebar_content(t_app *app);
-void		draw_sidebar(t_app *app);
+
+/* ************************************************************************** */
+/*                              PRINT                                         */
+/* ************************************************************************** */
+void		print_live_values(t_app *app, int start_y);
+int			print_controls(t_app *app);
 
 /* ************************************************************************** */
 /*                              PARSING                                       */

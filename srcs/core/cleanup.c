@@ -14,6 +14,7 @@
 
 static void	cleanup_map(t_app *app, int current_line);
 static void	cleanup_windows(t_app *app);
+static void	free_data_sidebar(t_app *app);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -33,6 +34,7 @@ void	cleanup_app(t_app *app)
 		return ;
 	cleanup_map(app, app->map.h_map);
 	cleanup_windows(app);
+	free_data_sidebar(app);
 }
 
 /* ************************************************************************** */
@@ -95,4 +97,11 @@ static void	cleanup_windows(t_app *app)
 	app->win.img = NULL;
 	app->win.win = NULL;
 	app->win.mlx = NULL;
+}
+
+static void	free_data_sidebar(t_app *app)
+{
+	if (app->sidebar.ctrl_pairs)
+		free(app->sidebar.ctrl_pairs);
+	app->sidebar.ctrl_pairs = NULL;
 }

@@ -44,7 +44,7 @@ int	handle_key(int keycode, void *param)
 	else if (keycode == KEY_W || keycode == KEY_S || \
 			keycode == KEY_A || keycode == KEY_D || \
 			keycode == KEY_Q || keycode == KEY_E || \
-			keycode == KEY_Y || keycode == KEY_C)
+			keycode == KEY_Y || keycode == KEY_Z || keycode == KEY_C)
 		handle_move(app, keycode);
 	return (SUCCESS);
 }
@@ -124,7 +124,7 @@ static void	handle_move(t_app *app, int keycode)
 		rotate_map(app, ROT_LEFT);
 	if (keycode == KEY_E)
 		rotate_map(app, ROT_RIGHT);
-	if (keycode == KEY_Y)
+	if (keycode == KEY_Y || keycode == KEY_Z)
 		scale_map(app, SCALE_INCREASE);
 	if (keycode == KEY_C)
 		scale_map(app, SCALE_DECREASE);

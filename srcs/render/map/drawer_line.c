@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/fdf.h"
+#include "../../../include/fdf.h"
 
 static t_coord	init_delta(t_point start, t_point end);
 static t_coord	init_direction(t_point start, t_point end);

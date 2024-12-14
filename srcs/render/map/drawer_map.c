@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/fdf.h"
+#include "../../../include/fdf.h"
 
 static void	draw_horizontal_lines(t_app *app, int y);
 static void	draw_vertical_lines(t_app *app, int y);

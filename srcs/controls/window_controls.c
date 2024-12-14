@@ -13,6 +13,7 @@
 #include "../../include/fdf.h"
 
 static void	resize_window(t_app *app, int new_width, int new_height);
+static void	resize_sidebar(t_app *app, int new_width, int new_height);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -60,9 +61,37 @@ static void	resize_window(t_app *app, int new_width, int new_height)
 	app->win.img = mlx_new_image(app->win.mlx, app->win.w_win, app->win.h_win);
 	app->win.addr = mlx_get_data_addr(app->win.img, &app->win.bbp, \
 								&app->win.line_len, &app->win.endian);
-	app->sidebar.width = new_width / 4;
-	app->sidebar.height = new_height;
+	resize_sidebar(app, new_width, new_height);
 	init_event(app);
 	app->needs_update = 1;
 	render(app);
+}
+
+static void	resize_sidebar(t_app *app, int new_width, int new_height)
+{
+	float	scale_y;
+
+	if (new_width == INIT_WIN_W && new_height == INIT_WIN_H)
+	{
+		app->sidebar.width = INIT_WIN_W / 4;
+		app->sidebar.height = INIT_WIN_H;
+		app->sidebar.x_pos = PADDING_X;
+		app->sidebar.y_pos = PADDING_Y;
+		app->sidebar.x_offset = PADDING_OF_X + PADDING_X;
+		app->sidebar.y_offset = PADDING_OF_Y;
+		app->sidebar.y_space_title = SPACE_TITLE;
+		app->sidebar.y_space_ctrl = SPACE_CTRL;
+	}
+	else
+	{
+		scale_y = (float)new_height / INIT_WIN_H;
+		app->sidebar.width = new_width / 10;
+		app->sidebar.height = new_height;
+		app->sidebar.x_pos = PADDING_X;
+		app->sidebar.y_pos = PADDING_Y;
+		app->sidebar.x_offset = PADDING_OF_X + PADDING_X;
+		app->sidebar.y_offset = PADDING_OF_Y;
+		app->sidebar.y_space_title = SPACE_TITLE;
+		app->sidebar.y_space_ctrl = SPACE_CTRL * scale_y;
+	}
 }

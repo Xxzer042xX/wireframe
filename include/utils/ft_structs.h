@@ -14,7 +14,7 @@
 # define FT_STRUCTS_H
 
 /* ************************************************************************** */
-/*                         ROTATION, SCALE AND SHIFT MAP ENUMS                       */
+/*                         ROTATION, SCALE AND SHIFT MAP ENUMS                */
 /* ************************************************************************** */
 enum e_shift_dir
 {
@@ -98,13 +98,25 @@ typedef union u_coord
 /* ************************************************************************** */
 /*                              SIDEBAR STRUCTURE                             */
 /* ************************************************************************** */
+typedef struct s_control_pair
+{
+	char	*key;
+	char	*value;
+}	t_control_pair;
+
 typedef struct s_sidebar
 {
-	int		width;
-	int		height;
-	char	**options;
-	int		selected;
-
+	t_control_pair	*ctrl_pairs;
+	char			*title;
+	int				x_pos;
+	int				x_offset;
+	int				y_offset;
+	int				y_pos;
+	int				y_space_title;
+	int				y_space_ctrl;
+	int				ctrl_count;
+	int				width;
+	int				height;
 }	t_sidebar;
 
 /* ************************************************************************** */
@@ -183,6 +195,7 @@ typedef struct s_matrix
 	float	iso_angle;
 	float	center_x;
 	float	center_y;
+	float	altitude_factor;
 	int		auto_rot;
 }	t_matrix;
 
@@ -200,9 +213,7 @@ typedef struct s_app
 	enum e_shift_dir	shift_dir;
 	enum e_rot_dir		rot_dir;
 	enum e_scale		scale;
-	int					projection_mode;
 	int					needs_update;
-	float				altitude_factor;
 }	t_app;
 
 #endif
