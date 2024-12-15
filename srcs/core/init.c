@@ -15,25 +15,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*   Cette fonction initialise l'ensemble de l'application FdF.               */
-/*   configure la matrice initiale des transformations.                       */
-/*   Elle procède ensuite au parsing des données du fichier(init_map),        */
-/*   initialise la connexion MLX et configure les événements.                 */
-/*   Et definis le status machine  RUNNING.                                   */
+/*   Elle exécute les étapes d'initialisation dans l'ordre suivant :          */
+/*   1. Vérifie la validité du pointeur app                                   */
+/*   2. Initialise la carte (init_map) avec les données du fichier            */
+/*   3. Initialise la connexion MLX (init_mlx)                                */
+/*   4. Configure les événements (init_event)                                 */
+/*   5. Initialise les données de la barre latérale (init_data_sidebar)       */
+/*   6. Initialise la matrice de transformation (init_matrix)                 */
+/*   7. Configure l'état initial de l'application :                           */
+/*      - Active le flag de mise à jour (needs_update)                        */
+/*      - Définit l'état sur STATE_RUNNING                                    */
+/*      - Configure la vue isométrique par défaut                             */
+/*                                                                            */
+/*   Si une étape échoue, la fonction arrête l'initialisation et retourne     */
+/*   immédiatement le code d'erreur approprié.                                */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
-/*   - ac : nombre d'arguments reçus                                          */
 /*   - filename : chemin vers le fichier à traiter                            */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si l'initialisation est réussie                                */
-/*   - Code d'erreur approprié si une étape échoue                            */
+/*   - SUCCESS si toutes les étapes d'initialisation réussissent              */
+/*   - ERR_DATA si le pointeur app est NULL                                   */
+/*   - Code d'erreur spécifique si une des étapes d'initialisation échoue     */
 /*                                                                            */
 /* ************************************************************************** */
 int	init_app(t_app *app, char *filename)
 {
 	int	status;
 
+	if (!app)
+		return (ERR_DATA);
 	status = init_map(app, filename);
 	if (status != SUCCESS)
 		return (error_exit(status));

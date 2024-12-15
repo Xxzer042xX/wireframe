@@ -14,12 +14,30 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction dessine le fond de la barre latérale.                     */
-/*   Elle remplit la zone définie par la largeur et hauteur de la sidebar     */
-/*   avec la couleur de menu spécifiée, pixel par pixel.                      */
+/*   Cette fonction dessine le fond rectangulaire de la barre latérale        */
+/*   qui contiendra les contrôles et informations de l'interface.             */
+/*                                                                            */
+/*   Processus de dessin :                                                    */
+/*   1. Définit la zone de dessin basée sur sidebar :                         */
+/*      - Largeur : de 0 à sidebar.width                                      */
+/*      - Hauteur : de 0 à sidebar.height                                     */
+/*                                                                            */
+/*   2. Remplit la zone pixel par pixel :                                     */
+/*      - Parcourt chaque ligne (y)                                           */
+/*      - Pour chaque ligne, parcourt chaque colonne (x)                      */
+/*      - Utilise put_pixel pour dessiner avec COLOR_MENU                     */
+/*                                                                            */
+/*   Vérifications :                                                          */
+/*   - Assure que chaque pixel est dans les limites de la sidebar             */
+/*   - Évite tout débordement hors de la zone définie                         */
+/*                                                                            */
+/*   Note : Cette fonction crée le fond sur lequel seront ensuite             */
+/*   affichés les textes et contrôles de l'interface.                         */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
+/*   - app : pointeur vers la structure principale contenant :                */
+/*          * sidebar.width : largeur de la barre latérale                    */
+/*          * sidebar.height : hauteur de la barre latérale                   */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

@@ -17,13 +17,23 @@ static void	draw_vertical_lines(t_app *app, int y);
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction dessine la carte complète en fil de fer (wireframe).      */
-/*   Elle parcourt chaque ligne de la carte et appelle les fonctions de       */
-/*   dessin pour tracer les lignes horizontales et verticales, créant         */
-/*   ainsi le maillage complet de la représentation 3D.                       */
+/*   Cette fonction principale gère le rendu de la carte en fil de fer        */
+/*   (wireframe) en dessinant le maillage complet ligne par ligne.            */
+/*                                                                            */
+/*   Processus de rendu :                                                     */
+/*   1. Parcourt chaque ligne verticale (y) de la carte                       */
+/*   2. Pour chaque ligne :                                                   */
+/*      - Dessine les connexions horizontales (points adjacents)              */
+/*      - Dessine les connexions verticales (avec la ligne suivante)          */
+/*                                                                            */
+/*   Note : Le rendu utilise les transformations matricielles actuelles       */
+/*   (projection, rotation, échelle) stockées dans app->matrix                */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
+/*   - app : pointeur vers la structure principale contenant :                */
+/*          * Les dimensions de la carte (w_map, h_map)                       */
+/*          * Les points et leurs propriétés                                  */
+/*          * Les paramètres de transformation                                */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
@@ -43,14 +53,20 @@ void	draw_map(t_app *app)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction dessine les lignes horizontales pour une rangée donnée.   */
-/*   Pour chaque point de la rangée, elle calcule les transformations         */
-/*   matricielles des points actuels et suivants, puis trace une ligne        */
-/*   entre eux pour créer les connexions horizontales du maillage.            */
+/*   Cette fonction dessine toutes les connexions horizontales d'une ligne    */
+/*   de la carte, créant les segments est-ouest du maillage.                  */
+/*                                                                            */
+/*   Pour chaque point de la ligne (sauf le dernier) :                        */
+/*   1. Obtient les coordonnées transformées du point courant via matrix()    */
+/*   2. Obtient les coordonnées transformées du point suivant                 */
+/*   3. Trace une ligne entre ces deux points avec draw_line                  */
+/*                                                                            */
+/*   Note : Les coordonnées sont déjà transformées (projection, rotation,     */
+/*   échelle) par la fonction matrix() avant le tracé.                        */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - y : index de la rangée courante                                        */
+/*   - app : pointeur vers la structure principale                            */
+/*   - y : index de la ligne à traiter (coordonnée verticale)                 */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
@@ -73,14 +89,21 @@ static void	draw_horizontal_lines(t_app *app, int y)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction dessine les lignes verticales pour une rangée donnée.     */
-/*   Elle calcule les transformations matricielles des points actuels et      */
-/*   des points de la rangée suivante, puis trace des lignes verticales       */
-/*   pour créer les connexions verticales du maillage.                        */
+/*   Cette fonction dessine toutes les connexions verticales d'une ligne      */
+/*   de la carte, créant les segments nord-sud du maillage.                   */
+/*                                                                            */
+/*   Pour chaque point de la ligne (sauf la dernière ligne) :                 */
+/*   1. Obtient les coordonnées transformées du point courant via matrix()    */
+/*   2. Obtient les coordonnées transformées du point de la ligne suivante    */
+/*   3. Trace une ligne entre ces deux points avec draw_line                  */
+/*                                                                            */
+/*   Particularités :                                                         */
+/*   - Vérifie qu'on n'est pas sur la dernière ligne (y < h_map - 1)          */
+/*   - Utilise les mêmes transformations que les lignes horizontales          */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - y : index de la rangée courante                                        */
+/*   - app : pointeur vers la structure principale                            */
+/*   - y : index de la ligne à traiter (coordonnée verticale)                 */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

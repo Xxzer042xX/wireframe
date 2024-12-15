@@ -12,20 +12,39 @@
 
 #include "../../include/fdf.h"
 
-//static void	render_sidebar_text(t_app *app);
-
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction gère le rendu principal de l'application.                 */
-/*   Elle met à jour l'affichage de la carte, l'affiche dans la fenêtre,      */
-/*   et gère l'arrêt propre du programme. Elle est appelée en continu par     */
-/*   la boucle MLX tant que l'application est en cours d'exécution.           */
+/*   Cette fonction centrale gère le cycle de rendu de l'application FdF.     */
+/*   Elle est appelée en continu par la boucle MLX et coordonne               */
+/*   l'affichage de tous les éléments visuels.                                */
+/*                                                                            */
+/*   Séquence de rendu :                                                      */
+/*   1. Vérification de l'état :                                              */
+/*      - Si STATE_KILL : termine la boucle MLX                               */
+/*      - Si !needs_update : aucun rendu nécessaire                           */
+/*                                                                            */
+/*   2. Rendu des éléments graphiques (si needs_update) :                     */
+/*      - Dessine la carte wireframe (draw_map)                               */
+/*      - Dessine le fond de la barre latérale (draw_sidebar)                 */
+/*      - Transfère l'image complète vers la fenêtre                          */
+/*                                                                            */
+/*   3. Rendu du texte et des informations :                                  */
+/*      - Affiche les contrôles dans la barre latérale                        */
+/*      - Affiche les valeurs en temps réel                                   */
+/*      - Utilise la position y retournée par print_controls                  */
+/*                                                                            */
+/*   4. Réinitialisation :                                                    */
+/*      - Désactive le flag needs_update                                      */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
+/*   - app : pointeur vers la structure principale contenant :                */
+/*          * L'état de l'application (state)                                 */
+/*          * Les ressources MLX (win)                                        */
+/*          * Le flag de mise à jour (needs_update)                           */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS dans tous les cas (valeur non utilisée par MLX)                */
+/*   - SUCCESS (0) dans tous les cas                                          */
+/*     Note : La valeur de retour n'est pas utilisée par MLX                  */
 /*                                                                            */
 /* ************************************************************************** */
 int	render(t_app *app)

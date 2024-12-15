@@ -18,18 +18,26 @@ static void			apply_transformations(t_point *point, t_app *app);
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction centrale applique toutes les transformations à un point.  */
-/*   Elle gère la rotation, la projection isométrique si activée, et les      */
-/*   transformations finales. Les coordonnées de la grille sont d'abord       */
-/*   calculées, puis transformées selon le mode de projection choisi.         */
+/*   Cette fonction centrale coordonne toutes les transformations             */
+/*   géométriques appliquées à un point de la grille 3D.                      */
+/*                                                                            */
+/*   Séquence de transformations :                                            */
+/*   1. Extraction des données du point de la grille                          */
+/*   2. Calcul des coordonnées dans l'espace grille                           */
+/*   3. Application de la rotation autour du centre                           */
+/*   4. Application de la projection selon le mode de vue                     */
+/*   5. Transfert des coordonnées transformées                                */
+/*   6. Application des transformations finales (zoom, décalage)              */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - x : position x dans la grille                                          */
-/*   - y : position y dans la grille                                          */
+/*   - app : pointeur vers la structure principale contenant :                */
+/*          * Les paramètres de transformation (matrix)                       */
+/*          * Les points de la carte (map)                                    */
+/*   - x : index horizontal dans la grille                                    */
+/*   - y : index vertical dans la grille                                      */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - Le point avec ses coordonnées transformées                             */
+/*   - t_point avec les coordonnées finales pour l'affichage                  */
 /*                                                                            */
 /* ************************************************************************** */
 t_point	matrix(t_app *app, int x, int y)
@@ -53,18 +61,24 @@ t_point	matrix(t_app *app, int x, int y)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction effectue la rotation d'un point autour du centre de la    */
-/*   carte. Elle calcule d'abord le centre (pivot), puis applique une         */
-/*   rotation matricielle autour de ce point selon l'angle donné.             */
+/*   Cette fonction effectue la rotation 2D d'un point autour d'un pivot      */
+/*   central en utilisant une matrice de rotation standard.                   */
+/*                                                                            */
+/*   Algorithme de rotation :                                                 */
+/*   1. Calcul du point pivot (centre de la carte)                            */
+/*   2. Translation au pivot (soustraction des coordonnées pivot)             */
+/*   3. Application de la matrice de rotation :                               */
+/*      x' = x*cos(θ) - y*sin(θ)                                              */
+/*      y' = x*sin(θ) + y*cos(θ)                                              */
+/*   4. Translation inverse (addition des coordonnées pivot)                  */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - x : coordonnée x du point à tourner                                    */
-/*   - y : coordonnée y du point à tourner                                    */
+/*   - x, y : coordonnées du point à tourner                                  */
 /*   - angle : angle de rotation en radians                                   */
-/*   - app : pointeur vers la structure principale de l'application           */
+/*   - app : pointeur vers les dimensions de la carte                         */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - Structure t_rot_point contenant les coordonnées après rotation         */
+/*   - t_rot_point avec les nouvelles coordonnées après rotation              */
 /*                                                                            */
 /* ************************************************************************** */
 static t_rot_point	rotate_point(double x, double y, double angle, t_app *app)
@@ -86,18 +100,29 @@ static t_rot_point	rotate_point(double x, double y, double angle, t_app *app)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction calcule les coordonnées en projection isométrique.        */
-/*   Elle applique une projection à 30 degrés (0.523599 radians) pour         */
-/*   transformer les coordonnées 3D en vue isométrique 2D, en prenant         */
-/*   en compte la hauteur z pour créer l'effet de profondeur.                 */
+/*   Cette fonction calcule les coordonnées 2D selon le mode de projection    */
+/*   sélectionné (isométrique, vue de dessus, vue de côté).                   */
+/*                                                                            */
+/*   Modes de projection :                                                    */
+/*   1. VIEW_ISO (Isométrique) :                                              */
+/*      - x = (grid_x - grid_y) * cos(30°)                                    */
+/*      - y = -z + (grid_x + grid_y) * sin(30°)                               */
+/*                                                                            */
+/*   2. VIEW_TOP (Vue de dessus) :                                            */
+/*      - x = grid_x                                                          */
+/*      - y = grid_y                                                          */
+/*                                                                            */
+/*   3. VIEW_SIDE (Vue latérale) :                                            */
+/*      - x = grid_x                                                          */
+/*      - y = -z                                                              */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - grid_x : position x dans la grille                                     */
-/*   - grid_y : position y dans la grille                                     */
+/*   - app : pointeur vers le mode de vue actuel                              */
+/*   - grid_x, grid_y : coordonnées dans la grille                            */
 /*   - z : hauteur du point                                                   */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - Structure t_rot_point contenant les coordonnées projetées              */
+/*   - t_rot_point avec les coordonnées projetées                             */
 /*                                                                            */
 /* ************************************************************************** */
 static t_rot_point	get_proj_coords(t_app *app, int grid_x, int grid_y, int z)
@@ -124,14 +149,25 @@ static t_rot_point	get_proj_coords(t_app *app, int grid_x, int grid_y, int z)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction applique les transformations finales à un point.          */
-/*   Elle gère le zoom, le décalage (shift) et le centrage dans la fenêtre.   */
-/*   Les transformations sont appliquées dans l'ordre : zoom, décalage,       */
-/*   centrage fenêtre, ajustement grille.                                     */
+/*   Cette fonction applique les transformations finales pour l'affichage     */
+/*   du point dans la fenêtre.                                                */
+/*                                                                            */
+/*   Séquence de transformations :                                            */
+/*   1. Échelle verticale (scale)                                             */
+/*   2. Zoom uniforme (zoom)                                                  */
+/*   3. Translation (shift_x, shift_y)                                        */
+/*   4. Centrage dans la fenêtre (w_win/2, h_win/2)                           */
+/*   5. Ajustement pour la taille de la grille                                */
+/*   6. Décalage pour la barre latérale                                       */
+/*                                                                            */
+/*   Notes :                                                                  */
+/*   - Les transformations sont appliquées dans un ordre spécifique           */
+/*   - L'échelle et le zoom affectent proportionnellement x et y              */
+/*   - Le centrage tient compte de la dimension totale de la grille           */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - point : pointeur vers le point à transformer                           */
-/*   - app : pointeur vers la structure principale de l'application           */
+/*   - app : pointeur vers les paramètres de transformation                   */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

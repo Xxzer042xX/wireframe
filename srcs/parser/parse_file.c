@@ -17,18 +17,29 @@ static int	save_points_on_database(t_app *app, char **tokens, int num_line);
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction réalise le parsing complet du fichier.                    */
-/*   Elle lit chaque ligne et appelle parse_line pour l'analyser.             */
-/*   Les lignes vides sont ignorées et la lecture s'arrête à la fin           */
-/*   du fichier ou en cas d'erreur.                                           */
+/*   Cette fonction effectue le parsing complet du fichier FdF en suivant     */
+/*   ces étapes :                                                             */
+/*                                                                            */
+/*   1. Ouverture et vérification du fichier :                                */
+/*      - Ouvre le fichier en lecture seule                                   */
+/*      - Vérifie que la première ligne existe                                */
+/*                                                                            */
+/*   2. Lecture séquentielle :                                                */
+/*      - Lit chaque ligne avec get_next_line                                 */
+/*      - Ignore les lignes vides (contenant uniquement '\n')                 */
+/*      - Envoie les lignes valides à parse_line                              */
+/*                                                                            */
+/*   3. Gestion des erreurs :                                                 */
+/*      - Libère la mémoire en cas d'erreur                                   */
+/*      - Ferme le descripteur de fichier dans tous les cas                   */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - filename : nom du fichier à parser                                     */
+/*   - app : pointeur vers la structure principale                            */
+/*   - filename : chemin du fichier à parser                                  */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si le parsing est réussi                                       */
-/*   - ERR_FILE en cas d'erreur de lecture                                    */
+/*   - SUCCESS si le fichier est complètement parsé                           */
+/*   - ERR_FILE si erreur d'ouverture ou lecture                              */
 /*                                                                            */
 /* ************************************************************************** */
 int	parse_file(t_app *app, char *filename)
@@ -60,19 +71,31 @@ int	parse_file(t_app *app, char *filename)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction analyse une ligne individuelle du fichier.                */
-/*   Elle nettoie la ligne, la découpe en tokens, vérifie sa largeur,         */
-/*   alloue l'espace pour les points et les sauvegarde dans la structure.     */
-/*   La première ligne définit la largeur de référence pour la carte.         */
+/*   Cette fonction parse une ligne du fichier FdF en plusieurs étapes :      */
+/*                                                                            */
+/*   1. Nettoyage et tokenisation :                                           */
+/*      - Supprime le retour chariot (\n) avec ft_strtrim                     */
+/*      - Découpe la ligne en tokens selon les espaces                        */
+/*                                                                            */
+/*   2. Validation de la largeur :                                            */
+/*      - Compte le nombre de tokens (largeur)                                */
+/*      - Si première ligne : définit la largeur de référence                 */
+/*      - Sinon : vérifie la cohérence avec la largeur de référence           */
+/*                                                                            */
+/*   3. Allocation et sauvegarde :                                            */
+/*      - Alloue un tableau de t_point pour la ligne                          */
+/*      - Appelle save_points_on_database pour remplir les données            */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - line : ligne à parser                                                  */
-/*   - num_line : numéro de la ligne courante                                 */
+/*   - app : pointeur vers la structure principale                            */
+/*   - line : ligne brute du fichier                                          */
+/*   - num_line : index de la ligne courante                                  */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si le parsing est réussi                                       */
-/*   - Codes d'erreur appropriés en cas d'échec                               */
+/*   - SUCCESS en cas de réussite                                             */
+/*   - ERR_MALLOC si échec d'allocation                                       */
+/*   - ERR_FORMAT si largeur invalide                                         */
+/*   - ERR_DATA si erreur dans les données                                    */
 /*                                                                            */
 /* ************************************************************************** */
 static int	parse_line(t_app *app, char *line, int num_line)
@@ -105,17 +128,28 @@ static int	parse_line(t_app *app, char *line, int num_line)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction sauvegarde les points dans la base de données.            */
-/*   Elle traite chaque token pour extraire les valeurs z et les couleurs,    */
-/*   puis initialise les coordonnées x et y des points dans la structure.     */
+/*   Cette fonction convertit les tokens en points dans la structure map.     */
+/*   Pour chaque token de la ligne, elle :                                    */
+/*                                                                            */
+/*   1. Extraction des données :                                              */
+/*      - Appelle parsing_z pour extraire la hauteur et la couleur            */
+/*      - Vérifie que le format des données est valide                        */
+/*                                                                            */
+/*   2. Initialisation des coordonnées :                                      */
+/*      - Définit x comme l'index de la colonne                               */
+/*      - Définit y comme le numéro de ligne                                  */
+/*                                                                            */
+/*   3. Validation :                                                          */
+/*      - Vérifie que l'index ne dépasse pas la largeur de la carte           */
+/*      - S'assure que le token n'est pas une ligne vide                      */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - tokens : tableau de chaînes contenant les valeurs à parser             */
-/*   - num_line : numéro de la ligne courante                                 */
+/*   - app : pointeur vers la structure principale                            */
+/*   - tokens : tableau des valeurs tokenisées de la ligne                    */
+/*   - num_line : index de la ligne en cours de traitement                    */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si la sauvegarde est réussie                                   */
+/*   - SUCCESS si tous les points sont correctement sauvegardés               */
 /*   - ERR_FORMAT si le format des données est invalide                       */
 /*                                                                            */
 /* ************************************************************************** */

@@ -18,14 +18,20 @@ static int	setup_new_window(t_app *app, int new_width, int new_height);
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction bascule la taille de la fenêtre entre plein écran         */
-/*   et demi-écran. Elle détermine la taille actuelle et appelle la           */
-/*   fonction resize_window avec les nouvelles dimensions appropriées.        */
+/*   Cette fonction bascule la fenêtre entre mode normal et plein écran.      */
+/*                                                                            */
+/*   Comportement :                                                           */
+/*   - Si fenêtre en taille normale (INIT_WIN_W/H) : passe en plein écran     */
+/*   - Si fenêtre en plein écran : retourne à la taille normale               */
+/*                                                                            */
+/*   Note : Le changement de taille déclenche un redessin complet de          */
+/*   l'interface et réinitialise la position de la vue.                       */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
 /*                                                                            */
-/*   Ne retourne rien (void)                                                  */
+/*   Retourne:                                                                */
+/*   - SUCCESS : le changement de taille s'est effectué correctement          */
 /*                                                                            */
 /* ************************************************************************** */
 int	toggle_window_size(t_app *app)
@@ -39,15 +45,31 @@ int	toggle_window_size(t_app *app)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction redimensionne la fenêtre aux dimensions spécifiées.       */
-/*   Elle détruit la fenêtre et l'image actuelles, recrée la fenêtre          */
-/*   aux nouvelles dimensions, réinitialise l'image, reconfigure les          */
-/*   événements et redessine la carte.                                        */
+/*   Cette fonction redimensionne la fenêtre aux dimensions spécifiées en     */
+/*   suivant ces étapes :                                                     */
+/*                                                                            */
+/*   1. Nettoyage des ressources existantes :                                 */
+/*      - Destruction de l'image MLX actuelle                                 */
+/*      - Destruction de la fenêtre actuelle                                  */
+/*      - En cas d'échec : nettoyage complet et sortie avec ERR_MLX           */
+/*                                                                            */
+/*   2. Mise à jour des paramètres :                                          */
+/*      - Nouvelles dimensions de fenêtre                                     */
+/*      - Réinitialisation des décalages (shift_x/y à 0)                      */
+/*                                                                            */
+/*   3. Recréation des éléments :                                             */
+/*      - Nouvelle fenêtre et image (setup_new_window)                        */
+/*      - Redimensionnement de la barre latérale                              */
+/*      - Réinitialisation des événements                                     */
+/*                                                                            */
+/*   4. Mise à jour de l'affichage :                                          */
+/*      - Activation du flag needs_update                                     */
+/*      - Rendu immédiat de la nouvelle vue                                   */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - new_width : nouvelle largeur de la fenêtre                             */
-/*   - new_height : nouvelle hauteur de la fenêtre                            */
+/*   - app : pointeur vers la structure principale                            */
+/*   - new_width : nouvelle largeur en pixels                                 */
+/*   - new_height : nouvelle hauteur en pixels                                */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
@@ -75,6 +97,37 @@ static void	resize_window(t_app *app, int new_width, int new_height)
 	render(app);
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction redimensionne la fenêtre aux dimensions spécifiées en     */
+/*   suivant ces étapes :                                                     */
+/*                                                                            */
+/*   1. Nettoyage des ressources existantes :                                 */
+/*      - Destruction de l'image MLX actuelle                                 */
+/*      - Destruction de la fenêtre actuelle                                  */
+/*      - En cas d'échec : nettoyage complet et sortie avec ERR_MLX           */
+/*                                                                            */
+/*   2. Mise à jour des paramètres :                                          */
+/*      - Nouvelles dimensions de fenêtre                                     */
+/*      - Réinitialisation des décalages (shift_x/y à 0)                      */
+/*                                                                            */
+/*   3. Recréation des éléments :                                             */
+/*      - Nouvelle fenêtre et image (setup_new_window)                        */
+/*      - Redimensionnement de la barre latérale                              */
+/*      - Réinitialisation des événements                                     */
+/*                                                                            */
+/*   4. Mise à jour de l'affichage :                                          */
+/*      - Activation du flag needs_update                                     */
+/*      - Rendu immédiat de la nouvelle vue                                   */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - new_width : nouvelle largeur en pixels                                 */
+/*   - new_height : nouvelle hauteur en pixels                                */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 static int	setup_new_window(t_app *app, int new_width, int new_height)
 {
 	app->win.win = mlx_new_window(app->win.mlx, new_width, new_height, TITLE);
@@ -101,14 +154,28 @@ static int	setup_new_window(t_app *app, int new_width, int new_height)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction redimensionne la barre latérale en fonction de la         */
-/*   nouvelle taille de fenêtre. Elle ajuste tous les paramètres de           */
-/*   positionnement et d'espacement en fonction des dimensions.               */
+/*   Cette fonction adapte la barre latérale aux nouvelles dimensions de      */
+/*   la fenêtre. Le comportement diffère selon le mode :                      */
+/*                                                                            */
+/*   Mode normal (INIT_WIN_W/H) :                                             */
+/*   - Largeur = 1/4 de la fenêtre                                            */
+/*   - Espacements standards (PADDING_X/Y, SPACE_TITLE/CTRL)                  */
+/*                                                                            */
+/*   Mode plein écran :                                                       */
+/*   - Largeur = 1/10 de la fenêtre                                           */
+/*   - Espacements adaptés à la nouvelle taille                               */
+/*   - Espacement vertical mis à l'échelle (scale_y)                          */
+/*                                                                            */
+/*   Paramètres ajustés :                                                     */
+/*   - Dimensions (width, height)                                             */
+/*   - Position (x_pos, y_pos)                                                */
+/*   - Marges (x_offset, y_offset)                                            */
+/*   - Espacements (y_space_title, y_space_ctrl)                              */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - new_width : nouvelle largeur de la fenêtre                            */
-/*   - new_height : nouvelle hauteur de la fenêtre                           */
+/*   - app : pointeur vers la structure principale                            */
+/*   - new_width : nouvelle largeur de la fenêtre                             */
+/*   - new_height : nouvelle hauteur de la fenêtre                            */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

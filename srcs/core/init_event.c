@@ -14,17 +14,37 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction initialise la gestion des événements de l'application.    */
-/*   Elle configure les hooks MLX pour gérer les événements clavier et la     */
-/*   fermeture de la fenêtre via la croix. Elle assure la liaison entre       */
-/*   les événements utilisateur et les fonctions de traitement.               */
+/*   Cette fonction configure les gestionnaires d'événements (hooks) MLX      */
+/*   pour l'interaction utilisateur. Elle initialise quatre types de hooks :  */
+/*                                                                            */
+/*   1. Événements clavier (handle_key) :                                     */
+/*      - Événement 2 (KeyPress)                                              */
+/*      - Masque 1L << 0                                                      */
+/*      - Gère les interactions au clavier                                    */
+/*                                                                            */
+/*   2. Événements souris (handle_mouse) :                                    */
+/*      - Gère les clics et le scroll de la souris                            */
+/*                                                                            */
+/*   3. Événement de fermeture (handle_exit) :                                */
+/*      - Événement 17 (DestroyNotify)                                        */
+/*      - Masque 1L << 17                                                     */
+/*      - Gère la fermeture via le bouton X de la fenêtre                     */
+/*                                                                            */
+/*   4. Événement de redimensionnement (toggle_window_size) :                 */
+/*      - Événement 25                                                        */
+/*      - Masque 1L << 18                                                     */
+/*      - Gère le changement de taille de la fenêtre                          */
+/*                                                                            */
+/*   La fonction vérifie la réussite de chaque hook et retourne une erreur    */
+/*   si l'un d'entre eux échoue.                                              */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
+/*          utilisé pour accéder à la fenêtre MLX et aux données              */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si l'initialisation est réussie                                */
-/*   - ERR_MLX si l'initialisation des hooks échoue                           */
+/*   - SUCCESS si tous les hooks sont initialisés correctement                */
+/*   - ERR_MLX si l'initialisation d'un hook échoue                           */
 /*                                                                            */
 /* ************************************************************************** */
 int	init_event(t_app *app)

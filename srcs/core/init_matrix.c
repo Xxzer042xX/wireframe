@@ -14,15 +14,26 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction configure les paramètres initiaux de transformation.      */
-/*   Elle définit les valeurs par défaut pour l'affichage du modèle 3D :      */
-/*   l'espacement entre les points, l'angle isométrique, le zoom et           */
-/*   l'échelle. Ces valeurs sont essentielles pour le rendu initial.          */
+/*   Cette fonction initialise la matrice de transformation avec les          */
+/*   paramètres par défaut suivants :                                         */
+/*   - space : Espacement entre les points (SPACE)                            */
+/*   - iso_angle : Angle pour la projection isométrique (ISO_ANGLE)           */
+/*   - zoom : Facteur de zoom initial (Z_DEFAULT)                             */
+/*   - scale : Facteur d'échelle global (SCALE)                               */
+/*                                                                            */
+/*   Ces paramètres sont stockés dans la sous-structure matrix de app         */
+/*   et sont utilisés pour :                                                  */
+/*   - Définir la distance entre les points de la grille (space)              */
+/*   - Configurer l'angle de la vue isométrique (iso_angle)                   */
+/*   - Définir le niveau de zoom initial de la vue (zoom)                     */
+/*   - Ajuster l'échelle globale du modèle (scale)                            */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
+/*          contenant la sous-structure matrix pour les transformations       */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
+/*   Note : La fonction suppose que le pointeur app est valide                */
 /*                                                                            */
 /* ************************************************************************** */
 void	init_matrix(t_app *app)

@@ -14,14 +14,25 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction change le mode de vue de la carte.                        */
-/*   Elle définit le mode de vue spécifié via l'enum e_views,                */
-/*   efface le buffer d'image actuel pour éviter les artéfacts,              */
-/*   puis redessine la carte avec la nouvelle projection.                     */
+/*   Cette fonction change le mode de projection de la carte dans l'une       */
+/*   des vues définies par l'enum e_views :                                   */
+/*   - VIEW_ISO : Vue isométrique (projection à 30 degrés)                    */
+/*   - VIEW_TOP : Vue de dessus (projection orthographique)                   */
+/*   - VIEW_FRONT : Vue de face (projection latérale)                         */
+/*                                                                            */
+/*   Le changement de vue s'effectue en trois étapes :                        */
+/*   1. Mise à jour du mode de vue dans app->map.view_mode                    */
+/*   2. Effacement complet du buffer d'image pour éviter les artéfacts        */
+/*      visuels lors du changement de projection                              */
+/*   3. Activation du flag needs_update pour forcer un nouveau rendu          */
+/*   4. Appel immédiat de render() pour afficher la nouvelle projection       */
+/*                                                                            */
+/*   Note : Cette fonction est typiquement appelée en réponse aux touches     */
+/*   F1, F2, F3 pour basculer entre les différentes vues.                     */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
-/*   - views_mode : mode de vue désiré (défini dans l'enum e_views)          */
+/*   - views_mode : constante de l'enum e_views spécifiant la vue désirée     */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

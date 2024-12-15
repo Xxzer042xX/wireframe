@@ -14,20 +14,41 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction analyse la valeur Z et la couleur d'un point de la carte. */
-/*   Elle gère le parsing des nombres négatifs, vérifie les digits, extrait   */
-/*   la valeur z et traite la couleur hexadécimale optionnelle (format        */
-/*   z,0xCOLOR). Si aucune couleur n'est spécifiée, utilise COLOR_GRID.       */
+/*   Cette fonction analyse et extrait les données (hauteur Z et couleur)     */
+/*   d'un point de la carte au format "z[,0xCOLOR]".                          */
+/*                                                                            */
+/*   Processus de parsing :                                                   */
+/*   1. Validation du format Z :                                              */
+/*      - Gère le signe négatif optionnel                                     */
+/*      - Vérifie que les caractères suivants sont des chiffres               */
+/*                                                                            */
+/*   2. Extraction de la hauteur :                                            */
+/*      - Convertit la chaîne en entier avec ft_atoi                          */
+/*      - Stocke la valeur dans points[num_line][col].pos.z                   */
+/*                                                                            */
+/*   3. Traitement de la couleur (si présente) :                              */
+/*      - Vérifie la présence du séparateur ','                               */
+/*      - Valide le format hexadécimal avec ft_ishexa                         */
+/*      - Convertit la couleur avec ft_atoi_base(hex_color, 16)               */
+/*      - Si pas de couleur spécifiée : utilise COLOR_GRID                    */
+/*                                                                            */
+/*   Format attendu :                                                         */
+/*   - "z" : nombre entier (avec signe optionnel)                             */
+/*   - ",0xCOLOR" : partie optionnelle, COLOR en hexadécimal                  */
+/*   Exemples : "5", "-3", "10,0xFF0000", "-2,0x00FF00"                       */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - z_value : chaîne contenant la valeur z et potentiellement la couleur   */
-/*   - num_line : index de la ligne courante                                  */
-/*   - col : index de la colonne courante                                     */
+/*   - app : pointeur vers la structure principale                            */
+/*   - z_value : chaîne à parser                                              */
+/*   - num_line : index de la ligne dans la carte                             */
+/*   - col : index de la colonne dans la ligne                                */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si le parsing est réussi                                       */
-/*   - ERR_FORMAT si le format des données est invalide                       */
+/*   - SUCCESS si le parsing réussit                                          */
+/*   - ERR_FORMAT si :                                                        */
+/*     * Format de nombre invalide                                            */
+/*     * Format hexadécimal invalide                                          */
+/*     * Caractères inattendus                                                */
 /*                                                                            */
 /* ************************************************************************** */
 int	parsing_z(t_app *app, char *z_value, int num_line, int col)

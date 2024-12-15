@@ -40,7 +40,7 @@ int	main(int ac, char **av)
 	char	*filename;
 	int		error;
 
-	if (ac != 2 || !is_fdf_file(av[1]))
+	if (ac != 2 || is_fdf_file(av[1]) != SUCCESS)
 		return (error_exit(ERR_ARGS));
 	filename = av[1];
 	ft_memset(&app, 0, sizeof(t_app));
@@ -52,14 +52,35 @@ int	main(int ac, char **av)
 	return (cleanup_app(&app), SUCCESS);
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Vérifie si le fichier spécifié a l'extension .fdf valide.                */
+/*   La fonction effectue plusieurs vérifications :                           */
+/*   - Vérifie si le nom du fichier n'est pas NULL                            */
+/*   - Vérifie si le nom a une longueur minimale de 5 caractères              */
+/*   - Vérifie la présence d'un point dans le nom du fichier                  */
+/*   - Vérifie si l'extension après le point est exactement ".fdf"            */
+/*                                                                            */
+/*   Paramètre:                                                               */
+/*   - filename : le nom du fichier à vérifier                                */
+/*                                                                            */
+/*   Retourne:                                                                */
+/*   - SUCCESS si le fichier a une extension .fdf valide                      */
+/*   - ERR_ARGS si l'une des vérifications échoue                             */
+/*                                                                            */
+/* ************************************************************************** */
 static int	is_fdf_file(const char *filename)
 {
 	const char	*ext;
 
+	if (!filename)
+		return (ERR_ARGS);
+	if (ft_strlen(filename) < 5)
+		return (ERR_ARGS);
 	ext = ft_strrchr(filename, '.');
 	if (!ext)
-		return (0);
+		return (ERR_ARGS);
 	if (ft_strncmp(ext, ".fdf", 4))
-		return (0);
-	return (1);
+		return (ERR_ARGS);
+	return (SUCCESS);
 }

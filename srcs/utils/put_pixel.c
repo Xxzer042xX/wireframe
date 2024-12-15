@@ -14,19 +14,35 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction dessine un pixel à une position donnée si celle-ci        */
-/*   se trouve dans les limites de la fenêtre.                                */
+/*   Cette fonction place un pixel de couleur spécifique dans le buffer       */
+/*   d'image MLX aux coordonnées données.                                     */
+/*                                                                            */
+/*   Processus de dessin :                                                    */
+/*   1. Vérification des limites :                                            */
+/*      - x dans [0, w_win[                                                   */
+/*      - y dans [0, h_win[                                                   */
+/*                                                                            */
+/*   2. Calcul de l'adresse mémoire :                                         */
+/*      position = addr + (y * line_len + x * (bbp/8))                        */
+/*      - line_len : taille d'une ligne en octets                             */
+/*      - bbp/8 : nombre d'octets par pixel                                   */
+/*                                                                            */
+/*   3. Écriture directe en mémoire :                                         */
+/*      - Cast en unsigned int pour écrire la couleur                         */
+/*      - Écriture uniquement si dans les limites                             */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - x : coordonnée x du pixel                                              */
-/*   - y : coordonnée y du pixel                                              */
-/*   - color : couleur du pixel au format RGB                                 */
+/*   - app : pointeur vers la structure principale contenant :                */
+/*          * win.addr : adresse du buffer d'image                            */
+/*          * win.line_len : longueur d'une ligne en octets                   */
+/*          * win.bbp : bits par pixel                                        */
+/*          * win.w_win, win.h_win : dimensions de la fenêtre                 */
+/*   - x, y : coordonnées du pixel                                            */
+/*   - color : valeur de couleur au format RGB (0xRRGGBB)                     */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-
 void	put_pixel(t_app *app, int x, int y, int color)
 {
 	char	*dst;

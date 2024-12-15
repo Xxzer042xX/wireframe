@@ -14,14 +14,24 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction déplace la carte dans la direction spécifiée.             */
-/*   Elle modifie les valeurs de décalage (shift_x, shift_y) en fonction      */
-/*   de la direction donnée, avec un pas de déplacement fixe de 10 unités.    */
-/*   Après le déplacement, la carte est automatiquement redessinée.           */
+/*   Cette fonction déplace la carte dans la direction spécifiée en           */
+/*   modifiant les coordonnées de translation (shift_x, shift_y).             */
+/*                                                                            */
+/*   Le déplacement s'effectue par pas de SHIFT_STEP (10) unités dans         */
+/*   une des quatre directions possibles :                                    */
+/*   - SHIFT_UP    : Déplacement vers le haut (-y)                            */
+/*   - SHIFT_DOWN  : Déplacement vers le bas (+y)                             */
+/*   - SHIFT_LEFT  : Déplacement vers la gauche (-x)                          */
+/*   - SHIFT_RIGHT : Déplacement vers la droite (+x)                          */
+/*                                                                            */
+/*   Après le déplacement :                                                   */
+/*   1. L'image est effacée (mise à zéro)                                     */
+/*   2. Le flag needs_update est activé                                       */
+/*   3. La carte est redessinée via render()                                  */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
-/*   - direction : direction du déplacement (SHIFT_UP/DOWN/LEFT/RIGHT)        */
+/*   - direction : constante indiquant la direction du déplacement            */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
@@ -45,15 +55,26 @@ void	shift_map(t_app *app, int direction)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction fait pivoter la carte autour de l'axe Z.                  */
-/*   Elle modifie l'angle de rotation (angle_z) selon la direction donnée,    */
-/*   avec un pas de rotation de 0.1 radian. L'angle est normalisé pour        */
-/*   rester dans l'intervalle [0, 2π]. La carte est redessinée après          */
-/*   la rotation.                                                             */
+/*   Cette fonction effectue une rotation de la carte autour de l'axe Z       */
+/*   en modifiant l'angle de rotation (angle_z).                              */
+/*                                                                            */
+/*   La rotation s'effectue par pas de ROT_STEP (0.1) radians dans l'une      */
+/*   des deux directions :                                                    */
+/*   - ROT_LEFT  : Rotation anti-horaire (-angle)                             */
+/*   - ROT_RIGHT : Rotation horaire (+angle)                                  */
+/*                                                                            */
+/*   L'angle est normalisé pour rester dans l'intervalle [0, 2π] :            */
+/*   - Si angle_z ≥ 2π : soustrait 2π jusqu'à être dans l'intervalle          */
+/*   - Si angle_z < 0  : ajoute 2π jusqu'à être dans l'intervalle             */
+/*                                                                            */
+/*   Après la rotation :                                                      */
+/*   1. L'image est effacée (mise à zéro)                                     */
+/*   2. Le flag needs_update est activé                                       */
+/*   3. La carte est redessinée via render()                                  */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
-/*   - direction : sens de rotation (ROT_LEFT/RIGHT)                          */
+/*   - direction : constante indiquant le sens de rotation                    */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

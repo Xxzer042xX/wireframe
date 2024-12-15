@@ -14,18 +14,32 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction initialise l'environnement graphique MLX.                 */
-/*   Elle crée la connexion MLX, récupère les dimensions de l'écran,          */
-/*   configure la taille de la fenêtre (moitié de l'écran), crée la           */
-/*   fenêtre et l'image MLX. Elle configure également l'adresse de            */
-/*   l'image et ses propriétés pour le rendu.                                 */
+/*   Cette fonction initialise l'environnement graphique MLX en plusieurs     */
+/*   étapes successives :                                                     */
+/*   1. Initialise la connexion MLX (mlx_init)                                */
+/*   2. Récupère les dimensions de l'écran (mlx_get_screen_size)              */
+/*   3. Définit les dimensions de la fenêtre selon INIT_WIN_W et INIT_WIN_H   */
+/*   4. Crée une nouvelle fenêtre avec le titre défini dans TITLE             */
+/*   5. Crée une nouvelle image MLX aux dimensions de la fenêtre              */
+/*   6. Récupère l'adresse de l'image et ses propriétés :                     */
+/*      - Bits par pixel (bbp)                                                */
+/*      - Longueur de ligne (line_len)                                        */
+/*      - Format d'endianness (endian)                                        */
+/*                                                                            */
+/*   La fonction vérifie chaque étape et retourne immédiatement en cas        */
+/*   d'échec d'une des initialisations.                                       */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
+/*          contenant la sous-structure win pour les éléments MLX             */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si l'initialisation MLX est réussie                            */
-/*   - ERR_MLX si une étape de l'initialisation échoue                        */
+/*   - SUCCESS si toutes les initialisations MLX réussissent                  */
+/*   - ERR_MLX si une des étapes suivantes échoue :                           */
+/*     * Échec de mlx_init                                                    */
+/*     * Échec de création de la fenêtre                                      */
+/*     * Échec de création de l'image                                         */
+/*     * Échec de récupération de l'adresse de l'image                        */
 /*                                                                            */
 /* ************************************************************************** */
 int	init_mlx(t_app *app)

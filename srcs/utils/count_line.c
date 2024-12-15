@@ -14,17 +14,32 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction compte le nombre de lignes valides dans le fichier.       */
-/*   Elle lit le fichier ligne par ligne en ignorant les lignes vides,        */
-/*   et stocke le résultat dans app->map.h_map.                               */
+/*   Cette fonction détermine la hauteur de la carte en comptant les          */
+/*   lignes non vides du fichier FdF.                                         */
+/*                                                                            */
+/*   Processus de comptage :                                                  */
+/*   1. Ouverture du fichier en lecture seule                                 */
+/*   2. Lecture séquentielle avec get_next_line :                             */
+/*      - Ignore les lignes vides (contenant uniquement '\n')                 */
+/*      - Incrémente le compteur pour les lignes valides                      */
+/*   3. Libération de la mémoire après chaque ligne                           */
+/*   4. Fermeture du fichier                                                  */
+/*   5. Stockage de la hauteur dans app->map.h_map                            */
+/*                                                                            */
+/*   Vérifications :                                                          */
+/*   - S'assure que le fichier contient au moins une ligne valide             */
+/*   - Gère la libération mémoire pour chaque ligne lue                       */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - filename : nom du fichier à analyser                                   */
+/*   - app : pointeur vers la structure principale contenant                  */
+/*          la sous-structure map pour stocker la hauteur                     */
+/*   - filename : chemin du fichier FdF à analyser                            */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si le comptage est réussi                                      */
-/*   - ERR_FILE si le fichier est vide ou invalide                            */
+/*   - SUCCESS si au moins une ligne valide est trouvée                       */
+/*   - ERR_FILE si :                                                          */
+/*     * Le fichier est vide                                                  */
+/*     * Ne contient que des lignes vides                                     */
 /*                                                                            */
 /* ************************************************************************** */
 int	count_line(t_app *app, const char *filename)

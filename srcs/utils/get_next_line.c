@@ -19,16 +19,34 @@ static int	init_buffer(char **static_buffer);
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction lit une ligne depuis un descripteur de fichier.           */
-/*   Elle utilise un buffer statique pour gérer les lectures partielles,      */
-/*   vérifie la validité des paramètres, et gère les erreurs. La fonction     */
-/*   retourne une ligne complète jusqu'au caractère newline ou EOF.           */
+/*   Cette fonction principale implémente la lecture ligne par ligne d'un     */
+/*   fichier en utilisant un buffer statique pour gérer les lectures          */
+/*   partielles.                                                              */
+/*                                                                            */
+/*   Processus de lecture :                                                   */
+/*   1. Vérifications initiales :                                             */
+/*      - Validité du descripteur de fichier                                  */
+/*      - Taille du buffer positive                                           */
+/*      - Permissions de lecture (read)                                       */
+/*                                                                            */
+/*   2. Gestion du buffer statique :                                          */
+/*      - Un buffer par descripteur de fichier (tableau OPEN_MAX)             */
+/*      - Nettoyage automatique en cas d'erreur                               */
+/*                                                                            */
+/*   3. Séquence d'opérations :                                               */
+/*      - Lecture et accumulation via read_file                               */
+/*      - Extraction de la ligne via ft_extract_line                          */
+/*      - Préparation du buffer suivant via ft_next                           */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - fd : descripteur de fichier à lire                                     */
+/*   - fd : descripteur de fichier valide (0 ≤ fd < OPEN_MAX)                 */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - La ligne lue ou NULL en cas d'erreur/EOF                               */
+/*   - Ligne lue (avec \n si présent)                                         */
+/*   - NULL si :                                                              */
+/*     * Fin de fichier atteinte                                              */
+/*     * Erreur de lecture                                                    */
+/*     * Paramètres invalides                                                 */
 /*                                                                            */
 /* ************************************************************************** */
 char	*get_next_line(int fd)
@@ -61,17 +79,30 @@ char	*get_next_line(int fd)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction lit le fichier par blocs de BUFFER_SIZE octets.           */
-/*   Elle accumule les lectures dans le buffer statique jusqu'à trouver       */
-/*   un newline ou atteindre EOF. Gère les erreurs de lecture et              */
-/*   d'allocation mémoire.                                                    */
+/*   Cette fonction effectue la lecture physique du fichier et accumule       */
+/*   les données dans le buffer statique.                                     */
+/*                                                                            */
+/*   Processus de lecture :                                                   */
+/*   1. Initialisation du buffer si nécessaire                                */
+/*   2. Allocation du buffer temporaire (BUFFER_SIZE + 1)                     */
+/*   3. Lecture en boucle jusqu'à :                                           */
+/*      - Rencontrer un \n                                                    */
+/*      - Atteindre EOF                                                       */
+/*      - Erreur de lecture                                                   */
+/*   4. Concaténation des lectures dans le buffer statique                    */
+/*                                                                            */
+/*   Gestion mémoire :                                                        */
+/*   - Libération systématique des buffers temporaires                        */
+/*   - Gestion des erreurs d'allocation                                       */
+/*   - Protection contre les fuites mémoire                                   */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - fd : descripteur de fichier                                            */
-/*   - static_buffer : buffer de stockage entre les appels                    */
+/*   - static_buffer : buffer persistant entre les appels                     */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - Buffer mis à jour ou NULL en cas d'erreur                              */
+/*   - Buffer mis à jour contenant les nouvelles données                      */
+/*   - NULL si erreur (lecture ou allocation)                                 */
 /*                                                                            */
 /* ************************************************************************** */
 static char	*read_file(int fd, char *static_buffer)
@@ -104,14 +135,22 @@ static char	*read_file(int fd, char *static_buffer)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction initialise le buffer statique.                            */
-/*   Elle alloue un buffer vide de taille 1 pour commencer la lecture.        */
+/*   Cette fonction initialise le buffer statique avec une chaîne vide.       */
+/*                                                                            */
+/*   Processus d'initialisation :                                             */
+/*   1. Allocation d'un octet unique initialisé à 0                           */
+/*   2. Vérification du succès de l'allocation                                */
+/*                                                                            */
+/*   Usage :                                                                  */
+/*   - Appelée lors de la première lecture d'un descripteur                   */
+/*   - Garantit un état initial cohérent du buffer                            */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - static_buffer : pointeur vers le buffer à initialiser                  */
+/*   - static_buffer : pointeur double vers le buffer à initialiser           */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS ou ERR_MALLOC en cas d'échec                                   */
+/*   - SUCCESS si l'allocation réussit                                        */
+/*   - ERR_MALLOC en cas d'échec d'allocation                                 */
 /*                                                                            */
 /* ************************************************************************** */
 static int	init_buffer(char **static_buffer)
@@ -124,15 +163,26 @@ static int	init_buffer(char **static_buffer)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction extrait une ligne complète du buffer statique.            */
-/*   Elle repère le premier newline ou la fin du buffer, et copie tous        */
-/*   les caractères jusqu'à ce point dans une nouvelle chaîne.                */
+/*   Cette fonction extrait une ligne complète du buffer statique,            */
+/*   en incluant le caractère newline s'il est présent.                       */
+/*                                                                            */
+/*   Algorithme d'extraction :                                                */
+/*   1. Vérification du contenu du buffer                                     */
+/*   2. Calcul de la longueur de la ligne jusqu'à \n ou \0                    */
+/*   3. Allocation de la mémoire pour la ligne                                */
+/*   4. Copie des caractères avec gestion spéciale du \n                      */
+/*                                                                            */
+/*   Particularités :                                                         */
+/*   - Inclut le \n dans la ligne si présent                                  */
+/*   - Gère correctement les lignes sans \n (fin de fichier)                  */
+/*   - Vérifie la validité du buffer d'entrée                                 */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - static_buffer : buffer contenant les données lues                      */
+/*   - static_buffer : buffer contenant les données accumulées                */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - La ligne extraite ou NULL en cas d'erreur                              */
+/*   - Ligne extraite (avec \n si présent)                                    */
+/*   - NULL si buffer vide ou erreur d'allocation                             */
 /*                                                                            */
 /* ************************************************************************** */
 static char	*ft_extract_line(char *static_buffer)
@@ -163,15 +213,26 @@ static char	*ft_extract_line(char *static_buffer)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction prépare le buffer pour la prochaine lecture.              */
-/*   Elle supprime la ligne extraite du buffer et déplace le reste            */
-/*   au début, libérant la mémoire de l'ancien buffer.                        */
+/*   Cette fonction prépare le buffer statique pour la prochaine lecture      */
+/*   en supprimant la ligne extraite et en préservant le reste.               */
+/*                                                                            */
+/*   Processus de mise à jour :                                               */
+/*   1. Localisation de la fin de la ligne extraite (\n ou \0)                */
+/*   2. Allocation d'un nouveau buffer pour les données restantes             */
+/*   3. Copie des caractères restants au début du nouveau buffer              */
+/*   4. Libération de l'ancien buffer                                         */
+/*                                                                            */
+/*   Gestion mémoire :                                                        */
+/*   - Libère l'ancien buffer dans tous les cas                               */
+/*   - Gère le cas où il n'y a plus de données à conserver                    */
+/*   - Protège contre les fuites mémoire                                      */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - str : buffer à mettre à jour                                           */
+/*   - str : buffer contenant la ligne extraite et les données restantes      */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - Nouveau buffer préparé ou NULL si plus de données                      */
+/*   - Nouveau buffer avec les données restantes                              */
+/*   - NULL si plus de données ou erreur d'allocation                         */
 /*                                                                            */
 /* ************************************************************************** */
 static char	*ft_next(char *str)

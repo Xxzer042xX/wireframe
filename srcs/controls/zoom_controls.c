@@ -14,15 +14,28 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction applique un facteur de zoom à la carte.                   */
-/*   Elle modifie le niveau de zoom en multipliant le zoom actuel par         */
-/*   le facteur donné, puis rafraîchit l'affichage via resize_image           */
-/*   pour appliquer la nouvelle échelle.                                      */
+/*   Cette fonction modifie le niveau de zoom de la carte en utilisant        */
+/*   un facteur multiplicateur.                                               */
+/*                                                                            */
+/*   Fonctionnement :                                                         */
+/*   1. Multiplie le zoom actuel (matrix.zoom) par le facteur fourni          */
+/*   2. Efface le contenu actuel de l'image (mise à zéro du buffer)           */
+/*   3. Active le flag de mise à jour (needs_update)                          */
+/*   4. Déclenche un nouveau rendu avec le zoom modifié                       */
+/*                                                                            */
+/*   Effets du facteur :                                                      */
+/*   - factor > 1 : Agrandissement (zoom avant)                               */
+/*     Exemple : 1.1 = agrandissement de 10%                                  */
+/*   - factor < 1 : Réduction (zoom arrière)                                  */
+/*     Exemple : 0.9 = réduction de 10%                                       */
+/*   - factor = 1 : Aucun changement                                          */
+/*                                                                            */
+/*   Note : Cette fonction est typiquement appelée en réponse aux             */
+/*   événements de la molette de la souris.                                   */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
-/*   - factor : facteur multiplicateur de zoom (> 1 pour zoomer,              */
-/*             < 1 pour dézoomer)                                             */
+/*   - factor : coefficient multiplicateur pour le zoom                       */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

@@ -14,18 +14,32 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction gère les événements de la souris.                         */
-/*   Elle traite la molette de souris pour le zoom : molette vers le haut    */
-/*   pour zoomer (Z_IN) et vers le bas pour dézoomer (Z_OUT).                */
+/*   Cette fonction gère les événements de la molette de souris pour          */
+/*   contrôler le zoom de la vue.                                             */
+/*                                                                            */
+/*   Événements traités :                                                     */
+/*   1. SCROLL_UP (molette vers le haut) :                                    */
+/*      - Zoom avant                                                          */
+/*      - Applique le facteur Z_IN à la vue                                   */
+/*                                                                            */
+/*   2. SCROLL_DOWN (molette vers le bas) :                                   */
+/*      - Zoom arrière                                                        */
+/*      - Applique le facteur Z_OUT à la vue                                  */
+/*                                                                            */
+/*   Note : Les coordonnées x,y du curseur sont enregistrées mais             */
+/*   actuellement non utilisées pour le zoom. Elles pourraient servir         */
+/*   à implémenter un zoom centré sur la position du curseur.                 */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - button : identifiant du bouton/action de la souris                    */
-/*   - x : position x du curseur                                             */
-/*   - y : position y du curseur                                             */
-/*   - param : pointeur vers la structure principale de l'application        */
+/*   - keycode : identifiant de l'événement souris (SCROLL_UP/DOWN)           */
+/*   - x : position horizontale du curseur en pixels                          */
+/*   - y : position verticale du curseur en pixels                            */
+/*   - param : pointeur void vers t_app, casté en interne                     */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS dans tous les cas                                             */
+/*   - SUCCESS dans tous les cas                                              */
+/*   Le retour est utilisé par le hook MLX mais n'affecte pas                 */
+/*   le comportement du programme                                             */
 /*                                                                            */
 /* ************************************************************************** */
 int	handle_mouse(int keycode, int x, int y, void *param)

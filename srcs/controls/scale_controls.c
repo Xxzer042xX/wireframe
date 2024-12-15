@@ -14,14 +14,27 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction modifie l'échelle de la carte.                            */
-/*   Elle augmente ou diminue la valeur du scale selon la direction donnée,   */
-/*   avec une limite minimale de 0.1 pour éviter une échelle trop petite.     */
+/*   Cette fonction modifie l'échelle verticale (hauteur) de la carte en      */
+/*   ajustant le facteur d'échelle (matrix.scale).                            */
+/*                                                                            */
+/*   Le changement d'échelle s'effectue par pas de SCALE_STEP dans l'une      */
+/*   des deux directions :                                                    */
+/*   - SCALE_INCREASE : Augmente la hauteur (+SCALE_STEP)                     */
+/*   - SCALE_DECREASE : Diminue la hauteur (-SCALE_STEP)                      */
+/*                                                                            */
+/*   Contraintes de sécurité :                                                */
+/*   - Une limite minimale de 0.1f est imposée pour éviter l'aplatissement    */
+/*     complet de la carte                                                    */
+/*                                                                            */
+/*   Après le changement d'échelle :                                          */
+/*   1. L'image est effacée (mise à zéro)                                     */
+/*   2. Le flag needs_update est activé                                       */
+/*   3. La carte est redessinée via render()                                  */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
-/*   - direction : direction du changement d'échelle                          */
-/*                (SCALE_INCREASE/SCALE_DECREASE)                             */
+/*          contenant la matrice de transformation                            */
+/*   - direction : constante indiquant le sens du changement d'échelle        */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

@@ -12,11 +12,35 @@
 
 #include "../../../include/fdf.h"
 
-static void	print_zoom_value(t_app *app, int x_pos, int x_value_pos, int y_pos);
-static void	print_rot_value(t_app *app, int x_pos, int x_value_pos, int y_pos);
+static void	print_zoom_val(t_app *app, int x_pos, int x_value_pos, int y_pos);
+static void	print_rot_val(t_app *app, int x_pos, int x_value_pos, int y_pos);
 static void	print_view_mode(t_app *app, int x_pos, int x_value_pos, int y_pos);
-static void	print_scale_value(t_app *app, int x_pos, int x_value_pos, int y_pos);
+static void	print_scale_val(t_app *app, int x_pos, int x_value_pos, int y_pos);
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction principale affiche les valeurs en temps réel des          */
+/*   paramètres de visualisation dans la barre latérale.                      */
+/*                                                                            */
+/*   Organisation de l'affichage :                                            */
+/*   1. Titre "Live Values:" (décalé de 20px, espacé de 30px)                 */
+/*   2. Affichage séquentiel des valeurs :                                    */
+/*      - Niveau de zoom (en pourcentage)                                     */
+/*      - Échelle verticale (en pourcentage)                                  */
+/*      - Angle de rotation (en degrés)                                       */
+/*      - Mode de vue actuel (ISO/PARALLEL/TOP)                               */
+/*                                                                            */
+/*   Espacements :                                                            */
+/*   - Entre le titre et la première valeur : y_space_title                   */
+/*   - Entre chaque valeur : y_space_ctrl                                     */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - start_y : position verticale initiale pour l'affichage                 */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 void	print_live_values(t_app *app, int start_y)
 {
 	char	*mlx;
@@ -32,16 +56,38 @@ void	print_live_values(t_app *app, int start_y)
 	current_y = start_y + 30;
 	mlx_string_put(mlx, win, x_pos + 20, current_y, TEXT_COLOR, "Live Values:");
 	current_y += app->sidebar.y_space_title;
-	print_zoom_value(app, x_pos, x_value_pos, current_y);
+	print_zoom_val(app, x_pos, x_value_pos, current_y);
 	current_y += app->sidebar.y_space_ctrl;
-	print_scale_value(app, x_pos, x_value_pos, current_y);
+	print_scale_val(app, x_pos, x_value_pos, current_y);
 	current_y += app->sidebar.y_space_ctrl;
-	print_rot_value(app, x_pos, x_value_pos, current_y);
+	print_rot_val(app, x_pos, x_value_pos, current_y);
 	current_y += app->sidebar.y_space_ctrl;
 	print_view_mode(app, x_pos, x_value_pos, current_y);
 }
 
-static void	print_zoom_value(t_app *app, int x_pos, int x_value_pos, int y_pos)
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction affiche le niveau de zoom actuel dans la barre latérale.  */
+/*                                                                            */
+/*   Format d'affichage :                                                     */
+/*   - Label "Zoom: " aligné à gauche                                         */
+/*   - Valeur numérique convertie en pourcentage (zoom * 100)                 */
+/*   - Symbole "%" après la valeur                                            */
+/*                                                                            */
+/*   Gestion mémoire :                                                        */
+/*   - Conversion du nombre avec ft_itoa                                      */
+/*   - Libération de la mémoire après affichage                               */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - x_pos : position horizontale du label                                  */
+/*   - x_value_pos : position horizontale de la valeur                        */
+/*   - y_pos : position verticale de la ligne                                 */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
+static void	print_zoom_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 {
 	char	*num_str;
 	char	*mlx;
@@ -59,7 +105,30 @@ static void	print_zoom_value(t_app *app, int x_pos, int x_value_pos, int y_pos)
 	}
 }
 
-static void	print_scale_value(t_app *app, int x_pos, int x_value_pos, int y_pos)
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction affiche l'échelle verticale actuelle dans la barre        */
+/*   latérale.                                                                */
+/*                                                                            */
+/*   Format d'affichage :                                                     */
+/*   - Label "Scale: " aligné à gauche                                        */
+/*   - Valeur numérique entière                                               */
+/*   - Symbole "%" après la valeur                                            */
+/*                                                                            */
+/*   Gestion mémoire :                                                        */
+/*   - Conversion du nombre avec ft_itoa                                      */
+/*   - Libération de la mémoire après affichage                               */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - x_pos : position horizontale du label                                  */
+/*   - x_value_pos : position horizontale de la valeur                        */
+/*   - y_pos : position verticale de la ligne                                 */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
+static void	print_scale_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 {
 	char	*num_str;
 	char	*mlx;
@@ -77,7 +146,30 @@ static void	print_scale_value(t_app *app, int x_pos, int x_value_pos, int y_pos)
 	}
 }
 
-static void	print_rot_value(t_app *app, int x_pos, int x_value_pos, int y_pos)
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction affiche l'angle de rotation actuel dans la barre          */
+/*   latérale.                                                                */
+/*                                                                            */
+/*   Format d'affichage :                                                     */
+/*   - Label "Rotation: " aligné à gauche                                     */
+/*   - Valeur en degrés (conversion radians -> degrés : angle * 180/π)        */
+/*   - Unité "deg" après la valeur                                            */
+/*                                                                            */
+/*   Gestion mémoire :                                                        */
+/*   - Conversion du nombre avec ft_itoa                                      */
+/*   - Libération de la mémoire après affichage                               */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - x_pos : position horizontale du label                                  */
+/*   - x_value_pos : position horizontale de la valeur                        */
+/*   - y_pos : position verticale de la ligne                                 */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
+static void	print_rot_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 {
 	char	*num_str;
 	char	*mlx;
@@ -95,6 +187,28 @@ static void	print_rot_value(t_app *app, int x_pos, int x_value_pos, int y_pos)
 	}
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction affiche le mode de vue actuel dans la barre latérale.     */
+/*                                                                            */
+/*   Modes de vue possibles :                                                 */
+/*   - VIEW_ISO : Affiche "ISO" (vue isométrique)                             */
+/*   - VIEW_SIDE : Affiche "PARALLEL" (vue parallèle)                         */
+/*   - VIEW_TOP : Affiche "TOP" (vue de dessus)                               */
+/*                                                                            */
+/*   Format d'affichage :                                                     */
+/*   - Label "View: " aligné à gauche                                         */
+/*   - Texte du mode actuel aligné avec les autres valeurs                    */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - x_pos : position horizontale du label                                  */
+/*   - x_value_pos : position horizontale de la valeur                        */
+/*   - y_pos : position verticale de la ligne                                 */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 static void	print_view_mode(t_app *app, int x_pos, int x_value_pos, int y_pos)
 {
 	char	*mlx;

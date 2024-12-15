@@ -17,17 +17,29 @@ static void	handle_view(t_app *app, int keycode);
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction centrale gère tous les événements clavier.                */
-/*   Elle identifie la touche pressée et redirige vers le gestionnaire        */
-/*   approprié : sortie (ESC), vue (V,F,+,-) ou mouvement (W,A,S,D,Q,E).      */
+/*   Cette fonction centrale gère tous les événements clavier de              */
+/*   l'application. Elle traite trois catégories de touches :                 */
+/*                                                                            */
+/*   1. Sortie du programme :                                                 */
+/*      - ESC : Déclenche handle_exit                                         */
+/*                                                                            */
+/*   2. Contrôles de vue (handle_view) :                                      */
+/*      - F : Bascule plein écran                                             */
+/*      - F1/F2/F3 : Change le mode de vue                                    */
+/*      - +/- : Contrôle du zoom                                              */
+/*                                                                            */
+/*   3. Contrôles de mouvement (handle_move) :                                */
+/*      - WASD : Déplacement de la carte                                      */
+/*      - Q/E : Rotation                                                      */
+/*      - Z/C : Échelle verticale                                             */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - keycode : code de la touche pressée                                    */
-/*   - param : pointeur vers les données de l'application (casté en t_app)    */
+/*   - param : pointeur void vers t_app, casté en interne                     */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS dans tous les cas normaux                                      */
-/*   - Résultat de handle_exit si ESC est pressé                              */
+/*   - SUCCESS pour les opérations normales                                   */
+/*   - STATE_KILL si ESC est pressé                                           */
 /*                                                                            */
 /* ************************************************************************** */
 int	handle_key(int keycode, void *param)
@@ -51,15 +63,18 @@ int	handle_key(int keycode, void *param)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction gère la sortie propre de l'application.                   */
-/*   Elle change l'état de l'application à STATE_KILL pour déclencher         */
-/*   l'arrêt du programme.                                                    */
+/*   Cette fonction gère la sortie propre du programme. Elle modifie          */
+/*   l'état de l'application pour déclencher l'arrêt.                         */
+/*                                                                            */
+/*   Processus :                                                              */
+/*   1. Change l'état de l'application à STATE_KILL                           */
+/*   2. La boucle principale détectera ce changement et terminera             */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - La nouvelle valeur de app->state (STATE_KILL)                          */
+/*   - STATE_KILL : nouvelle valeur de app->state                             */
 /*                                                                            */
 /* ************************************************************************** */
 int	handle_exit(t_app *app)
@@ -69,13 +84,24 @@ int	handle_exit(t_app *app)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction gère les modifications de vue de la carte.                */
-/*   Elle traite les touches V (vue), F (plein écran), + (zoom in) et         */
-/*   - (zoom out) pour modifier l'affichage de la carte.                      */
+/*   Cette fonction gère les changements de vue et d'affichage de             */
+/*   l'application. Elle traite six types d'actions :                         */
+/*                                                                            */
+/*   1. Changement de projection :                                            */
+/*      - F1 : Vue isométrique (VIEW_ISO)                                     */
+/*      - F2 : Vue de dessus (VIEW_TOP)                                       */
+/*      - F3 : Vue latérale (VIEW_SIDE)                                       */
+/*                                                                            */
+/*   2. Gestion de la fenêtre :                                               */
+/*      - F : Bascule plein écran                                             */
+/*                                                                            */
+/*   3. Contrôle du zoom :                                                    */
+/*      - Plus : Zoom avant (Z_IN)                                            */
+/*      - Minus : Zoom arrière (Z_OUT)                                        */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - keycode : code de la touche pressée                                    */
+/*   - app : pointeur vers la structure principale                            */
+/*   - keycode : code de la touche déclenchant l'action                       */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
@@ -99,13 +125,26 @@ static void	handle_view(t_app *app, int keycode)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction gère les déplacements et rotations de la carte.           */
-/*   Elle traite les touches WASD pour les déplacements dans les 4            */
-/*   directions et Q/E pour les rotations gauche/droite.                      */
+/*   Cette fonction gère les déplacements et transformations de la carte.     */
+/*   Elle traite trois types de mouvements :                                  */
+/*                                                                            */
+/*   1. Déplacements (shift_map) :                                            */
+/*      - W : Haut    (SHIFT_UP)                                              */
+/*      - S : Bas     (SHIFT_DOWN)                                            */
+/*      - A : Gauche  (SHIFT_LEFT)                                            */
+/*      - D : Droite  (SHIFT_RIGHT)                                           */
+/*                                                                            */
+/*   2. Rotations (rotate_map) :                                              */
+/*      - Q : Gauche  (ROT_LEFT)                                              */
+/*      - E : Droite  (ROT_RIGHT)                                             */
+/*                                                                            */
+/*   3. Échelle verticale (scale_map) :                                       */
+/*      - Y/Z : Augmente (SCALE_INCREASE)                                     */
+/*      - C : Diminue    (SCALE_DECREASE)                                     */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - keycode : code de la touche pressée                                    */
+/*   - app : pointeur vers la structure principale                            */
+/*   - keycode : code de la touche déclenchant l'action                       */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */

@@ -14,20 +14,40 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction gère l'affichage des messages d'erreur du programme.      */
-/*   Elle écrit sur la sortie d'erreur (fd 2) un message explicatif           */
-/*   correspondant au code d'erreur reçu. Les erreurs gérées incluent :       */
-/*   - Arguments invalides (ERR_ARGS)                                         */
-/*   - Échec d'allocation mémoire (ERR_MALLOC)                                */
-/*   - Problème d'accès fichier (ERR_FILE)                                    */
-/*   - Format de fichier invalide (ERR_FORMAT)                                */
-/*   - Échec d'initialisation MLX (ERR_MLX)                                   */
+/*   Cette fonction gère l'affichage standardisé des messages d'erreur        */
+/*   du programme FdF sur la sortie d'erreur standard (stderr).               */
+/*                                                                            */
+/*   Messages d'erreur par code :                                             */
+/*   1. ERR_ARGS :                                                            */
+/*      - "Invalid arguments"                                                 */
+/*      - Usage incorrect du programme ou arguments manquants                 */
+/*                                                                            */
+/*   2. ERR_MALLOC :                                                          */
+/*      - "Memory allocation failed"                                          */
+/*      - Échec d'allocation dynamique de mémoire                             */
+/*                                                                            */
+/*   3. ERR_FILE :                                                            */
+/*      - "Cannot open file"                                                  */
+/*      - Problèmes d'accès ou de lecture du fichier                          */
+/*                                                                            */
+/*   4. ERR_FORMAT :                                                          */
+/*      - "Invalid file format"                                               */
+/*      - Format de données incorrect dans le fichier                         */
+/*                                                                            */
+/*   5. ERR_MLX :                                                             */
+/*      - "MLX initialisation failed"                                         */
+/*      - Échec de l'initialisation graphique                                 */
+/*                                                                            */
+/*   Format de sortie :                                                       */
+/*   - Préfixe "Error: " suivi du message spécifique                          */
+/*   - Utilise ft_putstr_fd pour écrire sur stderr (fd 2)                     */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - error : code d'erreur à traiter                                        */
+/*   - error : code d'erreur défini dans les constantes                       */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - Le même code d'erreur reçu en paramètre                                */
+/*   - Le code d'erreur reçu en paramètre                                     */
+/*     Permet la propagation du code d'erreur dans le programme               */
 /*                                                                            */
 /* ************************************************************************** */
 int	error_exit(int error)

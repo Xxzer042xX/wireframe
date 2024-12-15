@@ -14,19 +14,36 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction gère le parsing principal du fichier de données FdF.      */
-/*   Elle compte d'abord le nombre de lignes, alloue l'espace mémoire         */
-/*   nécessaire pour stocker les points de la carte, puis lance le parsing    */
-/*   complet du fichier.                                                      */
+/*   Cette fonction initialise la structure de la carte (map) à partir d'un   */
+/*   fichier FdF en trois étapes :                                            */
+/*                                                                            */
+/*   1. count_line :                                                          */
+/*      - Compte le nombre de lignes dans le fichier                          */
+/*      - Stocke la hauteur dans app->map.h_map                               */
+/*      - Vérifie la validité du fichier                                      */
+/*                                                                            */
+/*   2. Allocation mémoire :                                                  */
+/*      - Alloue un tableau de pointeurs de taille h_map                      */
+/*      - Chaque pointeur représentera une ligne de la carte                  */
+/*                                                                            */
+/*   3. parse_file :                                                          */
+/*      - Parse le contenu complet du fichier                                 */
+/*      - Remplit la structure points avec les coordonnées et couleurs        */
+/*                                                                            */
+/*   La fonction vérifie chaque étape et retourne immédiatement en cas        */
+/*   d'erreur.                                                                */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale de l'application           */
-/*   - filename : nom du fichier à parser                                     */
+/*   - app : pointeur vers la structure principale contenant                  */
+/*          la sous-structure map pour les données de la carte                */
+/*   - filename : chemin du fichier FdF à parser                              */
 /*                                                                            */
 /*   Retourne:                                                                */
-/*   - SUCCESS si le parsing est réussi                                       */
-/*   - ERR_FILE en cas d'erreur de lecture                                    */
-/*   - ERR_MALLOC en cas d'échec d'allocation                                 */
+/*   - SUCCESS si l'initialisation complète réussit                           */
+/*   - ERR_FILE si :                                                          */
+/*     * Le comptage des lignes échoue                                        */
+/*     * Le parsing du fichier échoue                                         */
+/*   - ERR_MALLOC si l'allocation du tableau de points échoue                 */
 /*                                                                            */
 /* ************************************************************************** */
 int	init_map(t_app *app, char *filename)

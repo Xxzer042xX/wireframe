@@ -11,7 +11,40 @@
 /* ************************************************************************** */
 
 #include "../../include/fdf.h"
-
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction initialise les données de la barre latérale (sidebar)     */
+/*   qui affiche les contrôles de l'application. Elle configure :             */
+/*                                                                            */
+/*   1. Paramètres de base de la sidebar :                                    */
+/*      - Titre ("FdF Controls:")                                             */
+/*      - Dimensions (largeur = 1/4 de la fenêtre, hauteur = fenêtre)         */
+/*      - Espacements (y_offset, x_offset)                                    */
+/*      - Position (x_pos, y_pos)                                             */
+/*      - Espacements entre éléments (y_space_title, y_space_ctrl)            */
+/*                                                                            */
+/*   2. Contrôles de l'interface :                                            */
+/*      - Alloue un tableau de 6 paires de contrôles                          */
+/*      - Initialise les paires action/touche :                               */
+/*        * Déplacement (Move: wasd)                                          */
+/*        * Rotation (Rotate: Q/E)                                            */
+/*        * Vue (View: F1,2,3)                                                */
+/*        * Plein écran (Full Scr: f)                                         */
+/*        * Zoom (Zoom: Wheel)                                                */
+/*        * Échelle (Scale: z/c)                                              */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale de l'application           */
+/*          contenant la sous-structure sidebar                               */
+/*                                                                            */
+/*   Retourne:                                                                */
+/*   - SUCCESS si l'initialisation est réussie                                */
+/*   - ERR_MALLOC si l'allocation du tableau de contrôles échoue              */
+/*                                                                            */
+/*   Note: Utilise des constantes définies (INIT_WIN_W/H, PADDING_*)          */
+/*   pour les dimensions et espacements                                       */
+/*                                                                            */
+/* ************************************************************************** */
 int	init_data_sidebar(t_app *app)
 {
 	app->sidebar.title = "FdF Controls:";

@@ -12,6 +12,39 @@
 
 #include "../../../include/fdf.h"
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction affiche les contrôles et commandes dans la barre          */
+/*   latérale selon une mise en page à deux colonnes.                         */
+/*                                                                            */
+/*   Organisation de l'affichage :                                            */
+/*   1. Affichage du titre :                                                  */
+/*      - Position : x = x_pos + 20, y = y_offset initial                     */
+/*      - Texte : sidebar.title                                               */
+/*                                                                            */
+/*   2. Affichage des paires de contrôles :                                   */
+/*      - Colonne gauche (clés) : x = x_pos                                   */
+/*      - Colonne droite (valeurs) : x = x_pos + (width/2)                    */
+/*      - Espacement vertical :                                               */
+/*        * Initial : y_space_title après le titre                            */
+/*        * Entre les lignes : y_space_ctrl                                   */
+/*                                                                            */
+/*   Formats :                                                                */
+/*   - Couleur du texte : TEXT_COLOR                                          */
+/*   - Alignement : Deux colonnes (description : touche)                      */
+/*   - Nombre de contrôles : défini par ctrl_count                            */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale contenant :                */
+/*          * win : informations MLX (mlx, win)                               */
+/*          * sidebar : paramètres de la barre latérale                       */
+/*          * ctrl_pairs : tableau des paires de contrôles                    */
+/*                                                                            */
+/*   Retourne:                                                                */
+/*   - La position verticale finale (y_pos) après tous les contrôles          */
+/*     Peut être utilisée pour ajouter d'autres éléments en dessous           */
+/*                                                                            */
+/* ************************************************************************** */
 int	print_controls(t_app *app)
 {
 	int		adjusted_x_offset;
