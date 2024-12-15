@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 23:46:16 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/13 20:31:47 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/15 02:38:45 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ t_point	matrix(t_app *app, int x, int y)
 static t_rot_point	rotate_point(double x, double y, double angle, t_app *app)
 {
 	t_rot_point	result;
-	double		pivot_x;
-	double		pivot_y;
-	double		dx;
-	double		dy;
+	int			pivot_x;
+	int			pivot_y;
+	int			dx;
+	int			dy;
 
 	pivot_x = (app->map.w_map * app->matrix.space) / 2;
 	pivot_y = (app->map.h_map * app->matrix.space) / 2;

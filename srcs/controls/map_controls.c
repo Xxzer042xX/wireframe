@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 11:01:34 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/13 09:07:43 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/14 20:31:25 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,14 @@
 /* ************************************************************************** */
 void	shift_map(t_app *app, int direction)
 {
-	const float	shift_step = 10.0f;
-
 	if (direction == SHIFT_UP)
-		app->matrix.shift_y -= shift_step;
+		app->matrix.shift_y -= SHIFT_STEP;
 	else if (direction == SHIFT_DOWN)
-		app->matrix.shift_y += shift_step;
+		app->matrix.shift_y += SHIFT_STEP;
 	else if (direction == SHIFT_LEFT)
-		app->matrix.shift_x -= shift_step;
+		app->matrix.shift_x -= SHIFT_STEP;
 	else if (direction == SHIFT_RIGHT)
-		app->matrix.shift_x += shift_step;
+		app->matrix.shift_x += SHIFT_STEP;
 	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
 	app->needs_update = 1;
 	render(app);

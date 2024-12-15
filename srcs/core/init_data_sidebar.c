@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:39:31 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/14 11:39:31 by madelmen         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:32:55 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	init_data_sidebar(t_app *app)
 {
 	app->sidebar.title = "FdF Controls:";
-	app->sidebar.width = app->win.w_win / 4;
-	app->sidebar.height = app->win.h_win;
+	app->sidebar.width = INIT_WIN_W / 4;
+	app->sidebar.height = INIT_WIN_H;
 	app->sidebar.y_offset = PADDING_OF_Y;
 	app->sidebar.x_offset = PADDING_OF_X;
 	app->sidebar.x_pos = PADDING_X;

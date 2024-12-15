@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:39:56 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/13 23:38:04 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/15 10:07:11 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 /*                              DEFAULT VALUES                                */
 /* ************************************************************************** */
 //matrix
-# define SCALE 50.0f
+# define SCALE 10.0f
 # define SCALE_STEP 0.25f
-# define SPACE 100.0f
+# define SPACE 25.0f
 # define ISO_ANGLE 0.523599f
 
 //zoom
@@ -36,8 +36,7 @@
 # define ROT_STEP 0.1f
 
 //shift_map
-# define SHIFT_ST5P 10.0f
-# define ROT_STEP 0.1f
+# define SHIFT_STEP 10.0f
 
 //sidebar_content
 # define PADDING_X 20

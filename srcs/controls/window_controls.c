@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 23:44:49 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/14 00:31:00 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/14 22:28:06 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static void	resize_window(t_app *app, int new_width, int new_height)
 	mlx_destroy_window(app->win.mlx, app->win.win);
 	app->win.w_win = new_width;
 	app->win.h_win = new_height;
+	app->matrix.shift_x = 0;
+	app->matrix.shift_y = 0;
 	app->win.win = mlx_new_window(app->win.mlx, new_width, new_height, TITLE);
 	app->win.img = mlx_new_image(app->win.mlx, app->win.w_win, app->win.h_win);
 	app->win.addr = mlx_get_data_addr(app->win.img, &app->win.bbp, \
@@ -69,7 +71,7 @@ static void	resize_window(t_app *app, int new_width, int new_height)
 
 static void	resize_sidebar(t_app *app, int new_width, int new_height)
 {
-	float	scale_y;
+	int	scale_y;
 
 	if (new_width == INIT_WIN_W && new_height == INIT_WIN_H)
 	{
@@ -77,14 +79,14 @@ static void	resize_sidebar(t_app *app, int new_width, int new_height)
 		app->sidebar.height = INIT_WIN_H;
 		app->sidebar.x_pos = PADDING_X;
 		app->sidebar.y_pos = PADDING_Y;
-		app->sidebar.x_offset = PADDING_OF_X + PADDING_X;
+		app->sidebar.x_offset = PADDING_OF_X;
 		app->sidebar.y_offset = PADDING_OF_Y;
 		app->sidebar.y_space_title = SPACE_TITLE;
 		app->sidebar.y_space_ctrl = SPACE_CTRL;
 	}
 	else
 	{
-		scale_y = (float)new_height / INIT_WIN_H;
+		scale_y = new_height / INIT_WIN_H;
 		app->sidebar.width = new_width / 10;
 		app->sidebar.height = new_height;
 		app->sidebar.x_pos = PADDING_X;
