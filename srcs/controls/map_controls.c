@@ -36,6 +36,8 @@ void	shift_map(t_app *app, int direction)
 		app->matrix.shift_x -= SHIFT_STEP;
 	else if (direction == SHIFT_RIGHT)
 		app->matrix.shift_x += SHIFT_STEP;
+	else
+		return ;
 	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
 	app->needs_update = 1;
 	render(app);

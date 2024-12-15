@@ -14,6 +14,7 @@
 
 static void	resize_window(t_app *app, int new_width, int new_height);
 static void	resize_sidebar(t_app *app, int new_width, int new_height);
+static int	setup_new_window(t_app *app, int new_width, int new_height);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -53,22 +54,65 @@ int	toggle_window_size(t_app *app)
 /* ************************************************************************** */
 static void	resize_window(t_app *app, int new_width, int new_height)
 {
-	mlx_destroy_image(app->win.mlx, app->win.img);
-	mlx_destroy_window(app->win.mlx, app->win.win);
+	if (mlx_destroy_image(app->win.mlx, app->win.img) < 0)
+	{
+		cleanup_app(app);
+		exit(error_exit(ERR_MLX));
+	}
+	if (mlx_destroy_window(app->win.mlx, app->win.win) < 0)
+	{
+		cleanup_app(app);
+		exit(error_exit(ERR_MLX));
+	}
 	app->win.w_win = new_width;
 	app->win.h_win = new_height;
 	app->matrix.shift_x = 0;
 	app->matrix.shift_y = 0;
-	app->win.win = mlx_new_window(app->win.mlx, new_width, new_height, TITLE);
-	app->win.img = mlx_new_image(app->win.mlx, app->win.w_win, app->win.h_win);
-	app->win.addr = mlx_get_data_addr(app->win.img, &app->win.bbp, \
-								&app->win.line_len, &app->win.endian);
+	setup_new_window(app, new_width, new_height);
 	resize_sidebar(app, new_width, new_height);
 	init_event(app);
 	app->needs_update = 1;
 	render(app);
 }
 
+static int	setup_new_window(t_app *app, int new_width, int new_height)
+{
+	app->win.win = mlx_new_window(app->win.mlx, new_width, new_height, TITLE);
+	if (!app->win.win)
+	{
+		cleanup_app(app);
+		exit(error_exit(ERR_MLX));
+	}
+	app->win.img = mlx_new_image(app->win.mlx, app->win.w_win, app->win.h_win);
+	if (app->win.img == NULL)
+	{
+		cleanup_app(app);
+		exit(error_exit(ERR_MLX));
+	}
+	app->win.addr = mlx_get_data_addr(app->win.img, &app->win.bbp, \
+								&app->win.line_len, &app->win.endian);
+	if (app->win.addr == NULL)
+	{
+		cleanup_app(app);
+		exit(error_exit(ERR_MLX));
+	}
+	return (SUCCESS);
+}
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction redimensionne la barre latérale en fonction de la         */
+/*   nouvelle taille de fenêtre. Elle ajuste tous les paramètres de           */
+/*   positionnement et d'espacement en fonction des dimensions.               */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale de l'application           */
+/*   - new_width : nouvelle largeur de la fenêtre                            */
+/*   - new_height : nouvelle hauteur de la fenêtre                           */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 static void	resize_sidebar(t_app *app, int new_width, int new_height)
 {
 	int	scale_y;

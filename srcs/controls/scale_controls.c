@@ -12,6 +12,20 @@
 
 #include "../../include/fdf.h"
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction modifie l'échelle de la carte.                            */
+/*   Elle augmente ou diminue la valeur du scale selon la direction donnée,   */
+/*   avec une limite minimale de 0.1 pour éviter une échelle trop petite.     */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale de l'application           */
+/*   - direction : direction du changement d'échelle                          */
+/*                (SCALE_INCREASE/SCALE_DECREASE)                             */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 void	scale_map(t_app *app, int direction)
 {
 	if (direction == SCALE_INCREASE)

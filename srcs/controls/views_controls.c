@@ -14,14 +14,14 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction bascule entre les vues isométrique et plane de la carte.  */
-/*   Elle inverse l'état de la vue, recrée l'image pour éviter les artéfacts, */
-/*   puis redessine et réaffiche la carte avec la nouvelle projection.        */
-/*   La fonction gère la réinitialisation complète du buffer d'image et       */
-/*   sa configuration.                                                        */
+/*   Cette fonction change le mode de vue de la carte.                        */
+/*   Elle définit le mode de vue spécifié via l'enum e_views,                */
+/*   efface le buffer d'image actuel pour éviter les artéfacts,              */
+/*   puis redessine la carte avec la nouvelle projection.                     */
 /*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
+/*   - views_mode : mode de vue désiré (défini dans l'enum e_views)          */
 /*                                                                            */
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
