@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:39:56 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/15 10:07:11 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/16 13:10:17 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 /* ************************************************************************** */
 //matrix
 # define SCALE 10.0f
-# define SCALE_STEP 0.25f
+# define SCALE_STEP 1.0f
 # define SPACE 25.0f
 # define ISO_ANGLE 0.523599f
 

@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:39:31 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/14 20:32:55 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/16 14:47:06 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ int	init_data_sidebar(t_app *app)
 	if (!app->sidebar.ctrl_pairs)
 		return (ERR_MALLOC);
 	app->sidebar.ctrl_count = 7;
-	app->sidebar.ctrl_pairs[0] = (t_control_pair){"Move:", "wasd"};
-	app->sidebar.ctrl_pairs[1] = (t_control_pair){"Rotate:", "Q/E"};
-	app->sidebar.ctrl_pairs[2] = (t_control_pair){"View:", "F1/2/3"};
-	app->sidebar.ctrl_pairs[3] = (t_control_pair){"Full Scr:", "f"};
-	app->sidebar.ctrl_pairs[4] = (t_control_pair){"Zoom:", "Wheel"};
-	app->sidebar.ctrl_pairs[5] = (t_control_pair){"Scale:", "z/c"};
-	app->sidebar.ctrl_pairs[6] = (t_control_pair){"Colors:", "1/2"};
+	app->sidebar.ctrl_pairs[0] = (t_control_pair){"Move:", "W | A | S | D"};
+	app->sidebar.ctrl_pairs[1] = (t_control_pair){"View:", "F1 | F2 | F3"};
+	app->sidebar.ctrl_pairs[2] = (t_control_pair){"Zoom:", "Wheel | + / -"};
+	app->sidebar.ctrl_pairs[3] = (t_control_pair){"Rotate:", "Q | E"};
+	app->sidebar.ctrl_pairs[4] = (t_control_pair){"Colors:", "1 | 2"};
+	app->sidebar.ctrl_pairs[5] = (t_control_pair){"Scale:", "Z | C"};
+	app->sidebar.ctrl_pairs[6] = (t_control_pair){"Full Scr:", "F"};
 	return (SUCCESS);
 }

@@ -6,11 +6,13 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 10:46:06 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/14 10:46:06 by madelmen         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:47:56 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/fdf.h"
+
+static void	print_padding(t_app *app, int i, int y_pos);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -47,28 +49,37 @@
 /* ************************************************************************** */
 int	print_controls(t_app *app)
 {
-	int		adjusted_x_offset;
 	int		y_pos;
 	int		i;
-	char	*mlx;
-	char	*win;
 
-	mlx = app->win.mlx;
-	win = app->win.win;
 	y_pos = app->sidebar.y_offset;
-	adjusted_x_offset = app->sidebar.x_pos + (app->sidebar.width / 2);
-	mlx_string_put(mlx, win, app->sidebar.x_pos + 20, y_pos, SILVER,
-		app->sidebar.title);
+	mlx_string_put(app->win.mlx, app->win.win, app->sidebar.x_pos + 20, y_pos,
+		SILVER, app->sidebar.title);
 	y_pos += app->sidebar.y_space_title;
 	i = 0;
 	while (i < app->sidebar.ctrl_count)
 	{
-		mlx_string_put(mlx, win, app->sidebar.x_pos, y_pos, SILVER,
-			app->sidebar.ctrl_pairs[i].key);
-		mlx_string_put(mlx, win, adjusted_x_offset,
-			y_pos, SILVER, app->sidebar.ctrl_pairs[i].value);
+		mlx_string_put(app->win.mlx, app->win.win, app->sidebar.x_pos, y_pos,
+			SILVER, app->sidebar.ctrl_pairs[i].key);
+		print_padding(app, i, y_pos);
 		y_pos += app->sidebar.y_space_ctrl;
 		i++;
 	}
 	return (y_pos);
+}
+
+static void	print_padding(t_app *app, int i, int y_pos)
+{
+	int		adjusted_x_offset;
+
+	adjusted_x_offset = app->sidebar.x_pos + (app->sidebar.width / 2);
+	if (i == 0 || i == 1 || i == 2)
+		mlx_string_put(app->win.mlx, app->win.win, (adjusted_x_offset - 25),
+			y_pos, SILVER, app->sidebar.ctrl_pairs[i].value);
+	else if (i == 6)
+		mlx_string_put(app->win.mlx, app->win.win, adjusted_x_offset + 10,
+			y_pos, SILVER, app->sidebar.ctrl_pairs[i].value);
+	else
+		mlx_string_put(app->win.mlx, app->win.win, adjusted_x_offset,
+			y_pos, SILVER, app->sidebar.ctrl_pairs[i].value);
 }
