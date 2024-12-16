@@ -14,6 +14,7 @@
 
 static void	handle_move(t_app *app, int keycode);
 static void	handle_view(t_app *app, int keycode);
+static void	change_color(t_app *app, int keycode);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -58,6 +59,9 @@ int	handle_key(int keycode, void *param)
 			keycode == KEY_Q || keycode == KEY_E || \
 			keycode == KEY_Y || keycode == KEY_Z || keycode == KEY_C)
 		handle_move(app, keycode);
+	else if (keycode == KEY_1 || keycode == KEY_2 || keycode == KEY_3 || \
+			keycode == KEY_4 || keycode == KEY_5)
+		change_color(app, keycode);
 	return (SUCCESS);
 }
 
@@ -167,4 +171,12 @@ static void	handle_move(t_app *app, int keycode)
 		scale_map(app, SCALE_INCREASE);
 	if (keycode == KEY_C)
 		scale_map(app, SCALE_DECREASE);
+}
+
+static void	change_color(t_app *app, int keycode)
+{
+	if (keycode == KEY_1)
+		change_grid_color(app);
+	if (keycode == KEY_2)
+		change_sidebar_color(app);
 }

@@ -57,16 +57,16 @@ int	print_controls(t_app *app)
 	win = app->win.win;
 	y_pos = app->sidebar.y_offset;
 	adjusted_x_offset = app->sidebar.x_pos + (app->sidebar.width / 2);
-	mlx_string_put(mlx, win, app->sidebar.x_pos + 20, y_pos, TEXT_COLOR,
+	mlx_string_put(mlx, win, app->sidebar.x_pos + 20, y_pos, SILVER,
 		app->sidebar.title);
 	y_pos += app->sidebar.y_space_title;
 	i = 0;
 	while (i < app->sidebar.ctrl_count)
 	{
-		mlx_string_put(mlx, win, app->sidebar.x_pos, y_pos, TEXT_COLOR,
+		mlx_string_put(mlx, win, app->sidebar.x_pos, y_pos, SILVER,
 			app->sidebar.ctrl_pairs[i].key);
 		mlx_string_put(mlx, win, adjusted_x_offset,
-			y_pos, TEXT_COLOR, app->sidebar.ctrl_pairs[i].value);
+			y_pos, SILVER, app->sidebar.ctrl_pairs[i].value);
 		y_pos += app->sidebar.y_space_ctrl;
 		i++;
 	}

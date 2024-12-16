@@ -53,8 +53,8 @@ void	print_live_values(t_app *app, int start_y)
 	mlx = app->win.mlx;
 	win = app->win.win;
 	x_value_pos = app->sidebar.x_offset;
-	current_y = start_y + 30;
-	mlx_string_put(mlx, win, x_pos + 20, current_y, TEXT_COLOR, "Live Values:");
+	current_y = start_y + 20;
+	mlx_string_put(mlx, win, x_pos + 20, current_y, SILVER, "Live Values:");
 	current_y += app->sidebar.y_space_title;
 	print_zoom_val(app, x_pos, x_value_pos, current_y);
 	current_y += app->sidebar.y_space_ctrl;
@@ -98,9 +98,9 @@ static void	print_zoom_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 	num_str = ft_itoa((int)(app->matrix.zoom * 100));
 	if (num_str)
 	{
-		mlx_string_put(mlx, win, x_pos, y_pos, TEXT_COLOR, "Zoom: ");
-		mlx_string_put(mlx, win, x_value_pos, y_pos, TEXT_COLOR, num_str);
-		mlx_string_put(mlx, win, x_value_pos + 30, y_pos, TEXT_COLOR, "%");
+		mlx_string_put(mlx, win, x_pos, y_pos, SILVER, "Zoom: ");
+		mlx_string_put(mlx, win, x_value_pos, y_pos, SILVER, num_str);
+		mlx_string_put(mlx, win, x_value_pos + 30, y_pos, SILVER, "%");
 		free(num_str);
 	}
 }
@@ -139,9 +139,9 @@ static void	print_scale_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 	num_str = ft_itoa((int)(app->matrix.scale));
 	if (num_str)
 	{
-		mlx_string_put(mlx, win, x_pos, y_pos, TEXT_COLOR, "Scale: ");
-		mlx_string_put(mlx, win, x_value_pos, y_pos, TEXT_COLOR, num_str);
-		mlx_string_put(mlx, win, x_value_pos + 30, y_pos, TEXT_COLOR, "%");
+		mlx_string_put(mlx, win, x_pos, y_pos, SILVER, "Scale: ");
+		mlx_string_put(mlx, win, x_value_pos, y_pos, SILVER, num_str);
+		mlx_string_put(mlx, win, x_value_pos + 30, y_pos, SILVER, "%");
 		free(num_str);
 	}
 }
@@ -180,9 +180,9 @@ static void	print_rot_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 	num_str = ft_itoa((int)(app->matrix.angle_z * 180 / M_PI));
 	if (num_str)
 	{
-		mlx_string_put(mlx, win, x_pos, y_pos, TEXT_COLOR, "Rotation: ");
-		mlx_string_put(mlx, win, x_value_pos, y_pos, TEXT_COLOR, num_str);
-		mlx_string_put(mlx, win, x_value_pos + 30, y_pos, TEXT_COLOR, "deg");
+		mlx_string_put(mlx, win, x_pos, y_pos, SILVER, "Rotation: ");
+		mlx_string_put(mlx, win, x_value_pos, y_pos, SILVER, num_str);
+		mlx_string_put(mlx, win, x_value_pos + 30, y_pos, SILVER, "deg");
 		free(num_str);
 	}
 }
@@ -216,11 +216,11 @@ static void	print_view_mode(t_app *app, int x_pos, int x_value_pos, int y_pos)
 
 	mlx = app->win.mlx;
 	win = app->win.win;
-	mlx_string_put(mlx, win, x_pos, y_pos, TEXT_COLOR, "View: ");
+	mlx_string_put(mlx, win, x_pos, y_pos, SILVER, "View: ");
 	if (app->map.view_mode == VIEW_ISO)
-		mlx_string_put(mlx, win, x_value_pos, y_pos, TEXT_COLOR, "ISO");
+		mlx_string_put(mlx, win, x_value_pos, y_pos, SILVER, "ISO");
 	else if (app->map.view_mode == VIEW_SIDE)
-		mlx_string_put(mlx, win, x_value_pos, y_pos, TEXT_COLOR, "PARALLEL");
+		mlx_string_put(mlx, win, x_value_pos, y_pos, SILVER, "PARALLEL");
 	else if (app->map.view_mode == VIEW_TOP)
-		mlx_string_put(mlx, win, x_value_pos, y_pos, TEXT_COLOR, "TOP");
+		mlx_string_put(mlx, win, x_value_pos, y_pos, SILVER, "TOP");
 }

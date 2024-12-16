@@ -51,11 +51,12 @@ int	init_event(t_app *app)
 {
 	if (mlx_hook(app->win.win, 2, 1L << 0, handle_key, (void *)app) == -1)
 		return (error_exit(ERR_MLX));
-	if (mlx_mouse_hook(app->win.win, handle_mouse, app) == -1)
+	if (mlx_mouse_hook(app->win.win, handle_mouse, (void *)app) == -1)
 		return (error_exit(ERR_MLX));
-	if (mlx_hook(app->win.win, 17, 1L << 17, handle_exit, app) == -1)
+	if (mlx_hook(app->win.win, 17, 1L << 17, handle_exit, (void *)app) == -1)
 		return (error_exit(ERR_MLX));
-	if (mlx_hook(app->win.win, 25, 1L << 18, toggle_window_size, app) == -1)
+	if (mlx_hook(app->win.win, 25, 1L << 18, \
+		toggle_window_size, (void *)app) == -1)
 		return (error_exit(ERR_MLX));
 	return (SUCCESS);
 }

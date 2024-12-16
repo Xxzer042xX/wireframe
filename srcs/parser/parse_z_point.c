@@ -66,15 +66,15 @@ int	parsing_z(t_app *app, char *z_value, int num_line, int col)
 		app->map.points[num_line][col].pos.z = ft_atoi(z_value);
 		if (z_value[i] == ',')
 		{
-			i++;
-			hex_color = &z_value[i];
+			hex_color = &z_value[++i];
 			if (!ft_ishexa(hex_color))
 				return (ERR_FORMAT);
 			app->map.points[num_line][col].color.ref = \
 			ft_atoi_base(hex_color, 16);
+			app->map.points[num_line][col].color.is_parsed = 1;
 		}
 		else
-			app->map.points[num_line][col].color.ref = COLOR_GRID;
+			app->map.points[num_line][col].color.ref = PURPLE;
 		return (SUCCESS);
 	}
 	return (ERR_FORMAT);
