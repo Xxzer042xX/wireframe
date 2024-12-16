@@ -12,7 +12,7 @@
 
 #include "../../include/fdf.h"
 
-static void	resize_window(t_app *app, int new_width, int new_height);
+static void	remake_window(t_app *app, int new_width, int new_height);
 static void	resize_sidebar(t_app *app, int new_width, int new_height);
 static int	setup_new_window(t_app *app, int new_width, int new_height);
 
@@ -34,12 +34,12 @@ static int	setup_new_window(t_app *app, int new_width, int new_height);
 /*   - SUCCESS : le changement de taille s'est effectué correctement          */
 /*                                                                            */
 /* ************************************************************************** */
-int	toggle_window_size(t_app *app)
+int	resize_win(t_app *app)
 {
 	if (app->win.w_win == INIT_WIN_W && app->win.h_win == INIT_WIN_H)
-		resize_window(app, MAX_WIN_W, MAX_WIN_H);
+		remake_window(app, MAX_WIN_W, MAX_WIN_H);
 	else
-		resize_window(app, INIT_WIN_W, INIT_WIN_H);
+		remake_window(app, INIT_WIN_W, INIT_WIN_H);
 	return (SUCCESS);
 }
 
@@ -74,7 +74,7 @@ int	toggle_window_size(t_app *app)
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-static void	resize_window(t_app *app, int new_width, int new_height)
+static void	remake_window(t_app *app, int new_width, int new_height)
 {
 	if (mlx_destroy_image(app->win.mlx, app->win.img) < 0)
 	{

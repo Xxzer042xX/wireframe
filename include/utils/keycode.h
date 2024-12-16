@@ -49,9 +49,6 @@
 //change colors
 # define KEY_1			49
 # define KEY_2			50
-# define KEY_3			51
-# define KEY_4			52
-# define KEY_5			53
 
 /* ************************************************************************** */
 /*                                Mouse                                       */

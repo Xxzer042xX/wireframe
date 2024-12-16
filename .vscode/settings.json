@@ -4,6 +4,7 @@
 		"fdf.h": "c",
 		"mlx.h": "c",
 		"libft.h": "c",
-		"ft_printf.h": "c"
+		"ft_printf.h": "c",
+		"random": "c"
 	}
 }

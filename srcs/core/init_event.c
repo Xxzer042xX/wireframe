@@ -55,8 +55,7 @@ int	init_event(t_app *app)
 		return (error_exit(ERR_MLX));
 	if (mlx_hook(app->win.win, 17, 1L << 17, handle_exit, (void *)app) == -1)
 		return (error_exit(ERR_MLX));
-	if (mlx_hook(app->win.win, 25, 1L << 18, \
-		toggle_window_size, (void *)app) == -1)
+	if (mlx_hook(app->win.win, 25, 1L << 18, resize_win, (void *)app) == -1)
 		return (error_exit(ERR_MLX));
 	return (SUCCESS);
 }

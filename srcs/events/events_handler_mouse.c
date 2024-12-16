@@ -46,8 +46,9 @@ int	handle_mouse(int keycode, int x, int y, void *param)
 {
 	t_app	*app;
 
+	(void)x;
+	(void)y;
 	app = (t_app *)param;
-	ft_printf("Keycode: %d, x: %d, y: %d\n", keycode, x, y);
 	if (keycode == SCROLL_UP)
 		zoom(app, Z_IN);
 	if (keycode == SCROLL_DOWN)

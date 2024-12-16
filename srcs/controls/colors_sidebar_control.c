@@ -21,7 +21,7 @@ void	change_sidebar_color(t_app *app)
 
 	app->sidebar.color_mode = (app->sidebar.color_mode + 1) % 16;
 	color = define_color_opacity(app);
-	app->sidebar.color = color;
+	app->sidebar.color.hex = color;
 	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
 	app->needs_update = 1;
 	render(app);
@@ -32,7 +32,6 @@ static int	define_color_opacity(t_app *app)
 	int		color;
 
 	color = 0;
-	ft_printf("color_mode: %d\n", app->sidebar.color_mode);
 	if (app->sidebar.color_mode == 0)
 		color = PURPLE_50;
 	else if (app->sidebar.color_mode == 1)

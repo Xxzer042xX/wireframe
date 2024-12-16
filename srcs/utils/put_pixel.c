@@ -12,8 +12,7 @@
 
 #include "../../include/fdf.h"
 
-static unsigned int	blend_color_component(unsigned int new_comp, unsigned int old_comp, unsigned int alpha);
-static unsigned int	get_color_component(unsigned int color, int shift);
+static unsigned int	blender(unsigned int new, unsigned int old,	unsigned int a);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -56,81 +55,95 @@ void	put_pixel(t_app *app, int x, int y, int color)
 		*(unsigned int *)dst = color;
 	}
 }
-/*
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction dessine un pixel avec support de transparence (RGBA).     */
+/*   Elle mélange la nouvelle couleur avec la couleur existante selon         */
+/*   la valeur alpha spécifiée.                                               */
+/*                                                                            */
+/*   Processus de dessin :                                                    */
+/*   1. Vérification stricte des limites de la fenêtre                        */
+/*                                                                            */
+/*   2. Calcul de l'adresse du pixel dans le buffer :                         */
+/*      position = addr + (y * line_len + x * (bbp/8))                        */
+/*                                                                            */
+/*   3. Gestion de la transparence :                                          */
+/*      - Extraction de l'alpha (8 bits supérieurs)                           */
+/*      - Si alpha = 255 : couleur opaque (application directe)               */
+/*      - Sinon : mélange avec la couleur existante                           */
+/*                                                                            */
+/*   4. Mélange des composantes RGB :                                         */
+/*      - Extraction séparée de R, G, B                                       */
+/*      - Application de la formule de mélange pour chaque composante         */
+/*      - Reconstruction de la couleur finale                                 */
+/*                                                                            */
+/*   Format de couleur : 0xAARRGGBB                                           */
+/*   - AA : Canal alpha (transparence)                                        */
+/*   - RR : Rouge                                                             */
+/*   - GG : Vert                                                              */
+/*   - BB : Bleu                                                              */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - x, y : coordonnées du pixel                                            */
+/*   - color : valeur RGBA (0xAARRGGBB)                                       */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 void	put_pixel_rgba(t_app *app, int x, int y, int color)
 {
 	char			*dst;
-	unsigned int	current_color;
-	unsigned int	new_r, new_g, new_b;
-	unsigned int	old_r, old_g, old_b;
-	unsigned int	alpha;
-
-	// Vérifier si le pixel est dans les limites de la fenêtre
-	if (x >= 0 && x < app->win.w_win && y >= 0 && y < app->win.h_win)
-	{
-		dst = app->win.addr + (y * app->win.line_len + x * (app->win.bbp / 8));
-		current_color = *(unsigned int *)dst;
-
-		// Récupérer les composantes de la couleur existante
-		old_r = (current_color >> 16) & 0xFF;
-		old_g = (current_color >> 8) & 0xFF;
-		old_b = current_color & 0xFF;
-
-		// Récupérer les composantes de la nouvelle couleur
-		new_r = (color >> 16) & 0xFF;
-		new_g = (color >> 8) & 0xFF;
-		new_b = color & 0xFF;
-		alpha = (color >> 24) & 0xFF;
-
-		// Si alpha = 0xFF (255), dessiner directement
-		if (alpha == 255)
-		{
-			*(unsigned int *)dst = (new_r << 16) | (new_g << 8) | new_b;
-			return;
-		}
-
-		// Mélanger les couleurs avec l'alpha
-		new_r = (new_r * alpha + old_r * (255 - alpha)) / 255;
-		new_g = (new_g * alpha + old_g * (255 - alpha)) / 255;
-		new_b = (new_b * alpha + old_b * (255 - alpha)) / 255;
-
-		// Écrire la couleur mélangée
-		*(unsigned int *)dst = (new_r << 16) | (new_g << 8) | new_b;
-	}
-}
-*/
-
-static unsigned int	get_color_component(unsigned int color, int shift)
-{
-	return ((color >> shift) & 0xFF);
-}
-
-static unsigned int	blend_color_component(unsigned int new_comp, unsigned int old_comp, unsigned int alpha)
-{
-	return (new_comp * alpha + old_comp * (255 - alpha)) / 255;
-}
-
-void	put_pixel_rgba(t_app *app, int x, int y, int color)
-{
-	char			*dst;
-	unsigned int	current, new_color;
-	unsigned int	alpha;
+	t_rgba			current;
+	t_rgba			new;
+	t_rgba			blend;
 
 	if (x < 0 || x >= app->win.w_win || y < 0 || y >= app->win.h_win)
 		return ;
 	dst = app->win.addr + (y * app->win.line_len + x * (app->win.bbp / 8));
-	current = *(unsigned int *)dst;
-	alpha = (color >> 24) & 0xFF;
-	if (alpha == 255)
+	current.hex = *(unsigned int *)dst;
+	new.hex = color;
+	if (new.a == 255)
 	{
 		*(unsigned int *)dst = color & 0x00FFFFFF;
 		return ;
 	}
-	new_color = (blend_color_component(get_color_component(color, 16), \
-		get_color_component(current, 16), alpha) << 16) \
-		| (blend_color_component(get_color_component(color, 8), \
-		get_color_component(current, 8), alpha) << 8) \
-		| blend_color_component(get_color_component(color, 0), \
-		get_color_component(current, 0), alpha);
-	*(unsigned int *)dst = new_color;
+	blend.b = blender(new.b, current.b, new.a);
+	blend.g = blender(new.g, current.g, new.a);
+	blend.r = blender(new.r, current.r, new.a);
+	blend.a = 0;
+	*(unsigned int *)dst = blend.hex;
+}
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction calcule la valeur mélangée d'une composante de couleur    */
+/*   en tenant compte de la transparence.                                     */
+/*                                                                            */
+/*   Formule de mélange :                                                     */
+/*   (new_comp * alpha + old_comp * (255 - alpha)) / 255                      */
+/*                                                                            */
+/*   Processus de calcul :                                                    */
+/*   1. Pondération de la nouvelle composante par alpha                       */
+/*   2. Pondération de l'ancienne composante par (255 - alpha)                */
+/*   3. Somme des deux valeurs                                                */
+/*   4. Normalisation par division par 255                                    */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - new_comp : nouvelle composante de couleur (0-255)                      */
+/*   - old_comp : composante de couleur existante (0-255)                     */
+/*   - alpha : valeur de transparence (0-255)                                 */
+/*            0 = transparent, 255 = opaque                                   */
+/*                                                                            */
+/*   Retourne:                                                                */
+/*   - Composante de couleur mélangée (0-255)                                 */
+/*                                                                            */
+/* ************************************************************************** */
+static unsigned int	blender(unsigned int new, unsigned int old, unsigned int a)
+{
+	int		new_color;
+
+	new_color = (new * a + old * (255 - a)) / 255;
+	return (new_color);
 }

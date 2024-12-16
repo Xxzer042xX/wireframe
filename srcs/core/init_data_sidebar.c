@@ -48,7 +48,7 @@
 int	init_data_sidebar(t_app *app)
 {
 	app->sidebar.title = "Controls:";
-	app->sidebar.color = GREY_50;
+	app->sidebar.color.hex = GREY_50;
 	app->sidebar.width = INIT_WIN_W / 4;
 	app->sidebar.height = INIT_WIN_H;
 	app->sidebar.y_offset = PADDING_OF_Y;

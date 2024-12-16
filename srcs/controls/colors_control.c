@@ -15,6 +15,31 @@
 static int	define_colors(t_app *app);
 static int	define_colors_aux(t_app *app);
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction gère le changement cyclique des couleurs de la grille.    */
+/*                                                                            */
+/*   Processus de changement :                                                */
+/*   1. Incrémentation cyclique du mode couleur (0-15)                        */
+/*                                                                            */
+/*   2. Parcours de tous les points de la carte :                             */
+/*      - Ne modifie que les points sans couleur parsée                       */
+/*      - Applique la nouvelle couleur via define_colors                      */
+/*                                                                            */
+/*   3. Mise à jour de l'affichage :                                          */
+/*      - Efface le contenu actuel du buffer                                  */
+/*      - Active le flag de mise à jour                                       */
+/*      - Déclenche un nouveau rendu                                          */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale contenant :                */
+/*          * La carte et ses dimensions                                      */
+/*          * Le mode de couleur actuel                                       */
+/*          * Les paramètres d'affichage                                      */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 void	change_grid_color(t_app *app)
 {
 	int		i;
@@ -42,12 +67,35 @@ void	change_grid_color(t_app *app)
 	render(app);
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction détermine la couleur à utiliser selon le mode actuel      */
+/*   (modes 0-8).                                                             */
+/*                                                                            */
+/*   Table des couleurs :                                                     */
+/*   0 - PURPLE   : Violet                                                    */
+/*   1 - GREEN    : Vert                                                      */
+/*   2 - BLUE     : Bleu                                                      */
+/*   3 - RED      : Rouge                                                     */
+/*   4 - CYAN     : Cyan                                                      */
+/*   5 - ORANGE   : Orange                                                    */
+/*   6 - BROWN    : Marron                                                    */
+/*   7 - GREY     : Gris                                                      */
+/*   8 - WHITE    : Blanc                                                     */
+/*   9+ - Appel à define_colors_aux pour les modes supérieurs                 */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure contenant le mode couleur             */
+/*                                                                            */
+/*   Retourne:                                                                */
+/*   - Valeur de couleur RGB correspondant au mode                            */
+/*                                                                            */
+/* ************************************************************************** */
 static int	define_colors(t_app *app)
 {
 	int		color;
 
 	color = 0;
-	ft_printf("color_mode: %d\n", app->map.color_mode);
 	if (app->map.color_mode == 0)
 		color = PURPLE;
 	else if (app->map.color_mode == 1)
@@ -71,6 +119,27 @@ static int	define_colors(t_app *app)
 	return (color);
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction auxiliaire détermine la couleur pour les modes 9-15.      */
+/*                                                                            */
+/*   Table des couleurs étendues :                                            */
+/*   9  - SILVER   : Argent                                                   */
+/*   10 - GOLD     : Or                                                       */
+/*   11 - BRONZE   : Bronze                                                   */
+/*   12 - PLATINUM : Platine                                                  */
+/*   13 - COPPER   : Cuivre                                                   */
+/*   14 - BRASS    : Laiton                                                   */
+/*   15 - YELLOW   : Jaune                                                    */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure contenant le mode couleur             */
+/*                                                                            */
+/*   Retourne:                                                                */
+/*   - Valeur de couleur RGB correspondant au mode                            */
+/*   - 0 si mode non reconnu                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 static int	define_colors_aux(t_app *app)
 {
 	int	color;

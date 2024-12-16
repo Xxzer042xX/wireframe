@@ -59,7 +59,7 @@ void	draw_sidebar(t_app *app)
 		while (x < w_win)
 		{
 			if (y < h_win && x < w_win)
-				put_pixel_rgba(app, x, y, app->sidebar.color);
+				put_pixel_rgba(app, x, y, app->sidebar.color.hex);
 			x++;
 		}
 		y++;

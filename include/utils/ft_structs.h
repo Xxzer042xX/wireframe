@@ -69,21 +69,7 @@ enum e_app_state
 };
 
 /* ************************************************************************** */
-/*                            COORD UNIONS                                    */
-/* ************************************************************************** */
-typedef union u_coord
-{
-	struct
-	{
-		int	x;
-		int	y;
-		int	z;
-	};
-	int	coords[3];
-}	t_coord;
-
-/* ************************************************************************** */
-/*                              SIDEBAR STRUCTURE                             */
+/*                              SIDEBAR STRUCTURE AND UNION                   */
 /* ************************************************************************** */
 typedef struct s_control_pair
 {
@@ -91,9 +77,22 @@ typedef struct s_control_pair
 	char	*value;
 }	t_control_pair;
 
+typedef union u_rgba
+{
+	int	hex;
+	struct
+	{
+		unsigned char	b;
+		unsigned char	g;
+		unsigned char	r;
+		unsigned char	a;
+	};
+}	t_rgba;
+
 typedef struct s_sidebar
 {
 	t_control_pair	*ctrl_pairs;
+	t_rgba			color;
 	char			*title;
 	int				x_pos;
 	int				x_offset;
@@ -104,13 +103,23 @@ typedef struct s_sidebar
 	int				ctrl_count;
 	int				width;
 	int				height;
-	int				color;
 	int				color_mode;
 }	t_sidebar;
 
 /* ************************************************************************** */
 /*                                POINT STRUCTURE                             */
 /* ************************************************************************** */
+typedef union u_coord
+{
+	int	coords[3];
+	struct
+	{
+		int	x;
+		int	y;
+		int	z;
+	};
+}	t_coord;
+
 typedef struct s_color
 {
 	int	ref;

@@ -48,19 +48,16 @@ int	handle_key(int keycode, void *param)
 	t_app	*app;
 
 	app = (t_app *)param;
-	ft_printf("Keycode: %d\n", keycode);
 	if (keycode == KEY_ESC)
 		return (handle_exit(app));
 	if (keycode == KEY_F || keycode == KEY_PLUS || keycode == KEY_MINUS || \
-		keycode == KEY_F1 || keycode == KEY_F2 || keycode == KEY_F3)
+			keycode == KEY_F1 || keycode == KEY_F2 || keycode == KEY_F3)
 		handle_view(app, keycode);
-	else if (keycode == KEY_W || keycode == KEY_S || \
-			keycode == KEY_A || keycode == KEY_D || \
-			keycode == KEY_Q || keycode == KEY_E || \
+	else if (keycode == KEY_W || keycode == KEY_S || keycode == KEY_A || \
+			keycode == KEY_D || keycode == KEY_Q || keycode == KEY_E || \
 			keycode == KEY_Y || keycode == KEY_Z || keycode == KEY_C)
 		handle_move(app, keycode);
-	else if (keycode == KEY_1 || keycode == KEY_2 || keycode == KEY_3 || \
-			keycode == KEY_4 || keycode == KEY_5)
+	else if (keycode == KEY_1 || keycode == KEY_2)
 		change_color(app, keycode);
 	return (SUCCESS);
 }
@@ -112,7 +109,6 @@ int	handle_exit(t_app *app)
 /* ************************************************************************** */
 static void	handle_view(t_app *app, int keycode)
 {
-	ft_printf("keycode = %d\n", keycode);
 	if (keycode == KEY_F1)
 		toggle_view(app, VIEW_ISO);
 	if (keycode == KEY_F2)
@@ -120,7 +116,7 @@ static void	handle_view(t_app *app, int keycode)
 	if (keycode == KEY_F3)
 		toggle_view(app, VIEW_SIDE);
 	if (keycode == KEY_F)
-		toggle_window_size(app);
+		resize_win(app);
 	if (keycode == KEY_PLUS)
 		zoom(app, Z_IN);
 	if (keycode == KEY_MINUS)
