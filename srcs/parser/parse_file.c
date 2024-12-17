@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 00:39:43 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 08:22:14 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/17 21:57:35 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ static int	parse_line(t_app *app, char *line, int num_line)
 	app->map.points[num_line] = malloc(sizeof(t_point) * width);
 	if (!app->map.points[num_line])
 		return (ft_free_split(tokens, width), ERR_MALLOC);
+	ft_memset(app->map.points[num_line], 0, sizeof(t_point) * width);
 	if (save_points_on_database(app, tokens, num_line) != SUCCESS)
 		return (ft_free_split(tokens, width), ERR_DATA);
 	return (ft_free_split(tokens, width), SUCCESS);
