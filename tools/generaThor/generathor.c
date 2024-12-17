@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <time.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include "../../lib/libftprintf/include/ft_printf.h"
 #include "../../lib/libftprintf/libft/libft.h"
-
+/*
 static void	generate_map(int row, int col, int fp);
 
 /* ************************************************************************** */
@@ -31,6 +32,7 @@ static void	generate_map(int row, int col, int fp);
 /*   - 1 si nombre d'arguments incorrect ou erreur d'ouverture fichier        */
 /*                                                                            */
 /* ************************************************************************** */
+/*
 int	main(int ac, char **av)
 {
 	int		fd;
@@ -53,7 +55,7 @@ int	main(int ac, char **av)
 	close(fd);
 	return (0);
 }
-
+*/
 /* ************************************************************************** */
 /*                                                                            */
 /*   Cette fonction génère une carte FdF plate composée uniquement de         */
@@ -73,6 +75,7 @@ int	main(int ac, char **av)
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
+/*
 static void	generate_map(int row, int col, int fd)
 {
 	int	i;
@@ -125,4 +128,83 @@ static void	generate_map(int row, int col, int fd)
             fprintf(fp, "\n");
         i++;
     }
-}*/
+}
+*/
+
+static void generate_map(int row, int col, int fd)
+{
+    int i;
+    int j;
+    int crevasse_start;
+    int height;
+    char buffer[20];  // Buffer pour convertir les nombres en chaînes
+
+    // Initialisation de i
+    i = 0;
+    // Position de la crevasse (au milieu de la carte)
+    crevasse_start = col / 3;
+    
+    while (i < row)
+    {
+        j = 0;
+        while (j < col)
+        {
+            // Création de la crevasse
+            if (j >= crevasse_start && j <= (crevasse_start + 50))
+            {
+                // Profondeur variable de la crevasse (-80 à -100)
+                height = -80 - (rand() % 21);
+            }
+            else
+            {
+                // Surface accidentée (-5 à 5)
+                height = (rand() % 11) - 5;
+                
+                // Transition vers la crevasse
+                if (j == crevasse_start - 1 || j == crevasse_start + 51)
+                    height = -20 - (rand() % 21); // -20 à -40
+                else if (j == crevasse_start - 2 || j == crevasse_start + 52)
+                    height = -10 - (rand() % 11); // -10 à -20
+            }
+
+            // Conversion du nombre en chaîne
+            ft_itoa_base(height, buffer); // Vous devrez implémenter cette fonction ou utiliser ft_itoa
+
+            // Écriture dans le fichier
+            if (j < col - 1)
+            {
+                ft_putstr_fd(buffer, fd);
+                ft_putchar_fd(' ', fd);
+            }
+            else
+                ft_putstr_fd(buffer, fd);
+            j++;
+        }
+        if (i < row - 1)
+            ft_putchar_fd('\n', fd);
+        i++;
+    }
+}
+
+int main(int ac, char **av)
+{
+    int fd;
+
+    if (ac > 1)  // Changé pour vérifier si des arguments sont passés
+    {
+        ft_printf("Usage: ./generathor\n");
+        return (1);
+    }
+
+    // Initialisation du générateur de nombres aléatoires
+    srand(time(NULL));
+    
+    fd = open("ice_crevasse.fdf", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd < 0)
+        return (1);
+
+    // Génération d'une carte 500x50
+    generate_map(50, 500, fd);
+    close(fd);
+    return (0);
+}
