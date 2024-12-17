@@ -46,6 +46,7 @@ int	init_app(t_app *app, char *filename)
 
 	if (!app)
 		return (ERR_DATA);
+	init_matrix(app);
 	status = init_map(app, filename);
 	if (status != SUCCESS)
 		return (error_exit(status));
@@ -58,7 +59,6 @@ int	init_app(t_app *app, char *filename)
 	status = init_data_sidebar(app);
 	if (status != SUCCESS)
 		return (error_exit(status));
-	init_matrix(app);
 	app->needs_update = 1;
 	app->state = STATE_RUNNING;
 	toggle_view(app, VIEW_ISO);

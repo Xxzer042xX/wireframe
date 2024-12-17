@@ -47,27 +47,50 @@ static void	print_padding(t_app *app, int i, int y_pos);
 /*     Peut être utilisée pour ajouter d'autres éléments en dessous           */
 /*                                                                            */
 /* ************************************************************************** */
-int	print_controls(t_app *app)
+int	print_controls(t_app *app, int y_pos)
 {
-	int		y_pos;
 	int		i;
 
-	y_pos = app->sidebar.y_offset;
-	mlx_string_put(app->win.mlx, app->win.win, app->sidebar.x_pos + 20, y_pos,
-		SILVER, app->sidebar.title);
-	y_pos += app->sidebar.y_space_title;
 	i = 0;
 	while (i < app->sidebar.ctrl_count)
 	{
 		mlx_string_put(app->win.mlx, app->win.win, app->sidebar.x_pos, y_pos,
 			SILVER, app->sidebar.ctrl_pairs[i].key);
 		print_padding(app, i, y_pos);
-		y_pos += app->sidebar.y_space_ctrl;
+		if (i < app->sidebar.ctrl_count - 1)
+			y_pos += app->sidebar.y_space_ctrl;
 		i++;
 	}
 	return (y_pos);
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction gère l'alignement spécial des valeurs de contrôle dans    */
+/*   la barre latérale avec des ajustements de position personnalisés.        */
+/*                                                                            */
+/*   Ajustements spéciaux :                                                   */
+/*   1. Pour les indices 0, 1, 2 (premiers contrôles) :                       */
+/*      - Décalage de -25 pixels par rapport à l'offset standard              */
+/*                                                                            */
+/*   2. Pour l'indice 6 :                                                     */
+/*      - Décalage de +10 pixels par rapport à l'offset standard              */
+/*                                                                            */
+/*   3. Pour les autres indices :                                             */
+/*      - Utilisation de l'offset standard (width/2)                          */
+/*                                                                            */
+/*   Calcul de la position :                                                  */
+/*   - Base : x_pos + (width/2)                                               */
+/*   - Ajustements selon l'indice du contrôle                                 */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - i : index du contrôle dans le tableau ctrl_pairs                       */
+/*   - y_pos : position verticale de la ligne courante                        */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 static void	print_padding(t_app *app, int i, int y_pos)
 {
 	int		adjusted_x_offset;

@@ -169,6 +169,27 @@ static void	handle_move(t_app *app, int keycode)
 		scale_map(app, SCALE_DECREASE);
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Cette fonction gère les changements de couleurs des éléments visuels.    */
+/*                                                                            */
+/*   Options de changement de couleur :                                       */
+/*   1. Grille (KEY_1) :                                                      */
+/*      - change_grid_color : Cycle à travers les couleurs de la grille       */
+/*                                                                            */
+/*   2. Barre latérale (KEY_2) :                                              */
+/*      - change_sidebar_color : Cycle à travers les couleurs du menu         */
+/*                                                                            */
+/*   Note : Les deux éléments ont des cycles de couleur indépendants          */
+/*   permettant une personnalisation distincte de chaque élément.             */
+/*                                                                            */
+/*   Paramètres:                                                              */
+/*   - app : pointeur vers la structure principale                            */
+/*   - keycode : touche pressée (KEY_1 ou KEY_2)                              */
+/*                                                                            */
+/*   Ne retourne rien (void)                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 static void	change_color(t_app *app, int keycode)
 {
 	if (keycode == KEY_1)

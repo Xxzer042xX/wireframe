@@ -41,28 +41,20 @@ static void	print_scale_val(t_app *app, int x_pos, int x_value_pos, int y_pos);
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-void	print_live_values(t_app *app, int start_y)
+void	print_live_values(t_app *app, int y_pos)
 {
-	char	*mlx;
-	char	*win;
-	int		x_pos;
-	int		x_value_pos;
-	int		current_y;
+	int	x_pos;
+	int	x_value_pos;
 
 	x_pos = app->sidebar.x_pos;
-	mlx = app->win.mlx;
-	win = app->win.win;
 	x_value_pos = app->sidebar.x_offset;
-	current_y = start_y + 20;
-	mlx_string_put(mlx, win, x_pos + 20, current_y, SILVER, "Live Values:");
-	current_y += app->sidebar.y_space_title;
-	print_zoom_val(app, x_pos, x_value_pos, current_y);
-	current_y += app->sidebar.y_space_ctrl;
-	print_scale_val(app, x_pos, x_value_pos, current_y);
-	current_y += app->sidebar.y_space_ctrl;
-	print_rot_val(app, x_pos, x_value_pos, current_y);
-	current_y += app->sidebar.y_space_ctrl;
-	print_view_mode(app, x_pos, x_value_pos, current_y);
+	print_zoom_val(app, x_pos, x_value_pos, y_pos);
+	y_pos += app->sidebar.y_space_ctrl;
+	print_scale_val(app, x_pos, x_value_pos, y_pos);
+	y_pos += app->sidebar.y_space_ctrl;
+	print_rot_val(app, x_pos, x_value_pos, y_pos);
+	y_pos += app->sidebar.y_space_ctrl;
+	print_view_mode(app, x_pos, x_value_pos, y_pos);
 }
 
 /* ************************************************************************** */
@@ -95,7 +87,7 @@ static void	print_zoom_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 
 	mlx = app->win.mlx;
 	win = app->win.win;
-	num_str = ft_itoa((int)(app->matrix.zoom * 100));
+	num_str = ft_itoa((int)(app->matrix.zoom * 100) - 1);
 	if (num_str)
 	{
 		mlx_string_put(mlx, win, x_pos, y_pos, SILVER, "Zoom: ");
@@ -136,7 +128,7 @@ static void	print_scale_val(t_app *app, int x_pos, int x_value_pos, int y_pos)
 
 	mlx = app->win.mlx;
 	win = app->win.win;
-	num_str = ft_itoa((int)(app->matrix.scale));
+	num_str = ft_itoa((int)(app->matrix.scale) - 17);
 	if (num_str)
 	{
 		mlx_string_put(mlx, win, x_pos, y_pos, SILVER, "Scale: ");

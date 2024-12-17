@@ -172,6 +172,7 @@ static t_rot_point	get_proj_coords(t_app *app, int grid_x, int grid_y, int z)
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
+
 static void	apply_transformations(t_point *point, t_app *app)
 {
 	point->pos.x *= app->matrix.scale;
@@ -180,9 +181,8 @@ static void	apply_transformations(t_point *point, t_app *app)
 	point->pos.y *= app->matrix.zoom;
 	point->pos.x += app->matrix.shift_x;
 	point->pos.y += app->matrix.shift_y;
-	point->pos.x += app->win.w_win / 2;
-	point->pos.y += app->win.h_win / 2;
-	point->pos.x -= (app->map.w_map * app->matrix.zoom * app->matrix.space) / 2;
-	point->pos.y -= (app->map.h_map * app->matrix.zoom * app->matrix.space) / 2;
-	point->pos.x += app->sidebar.width + 40;
+	point->pos.x += app->sidebar.width + ((app->win.w_win - app->sidebar.width) / 2);
+	point->pos.y += ((app->win.h_win / 2) / 2 / 2);
+	//point->pos.x -= (app->map.w_map * app->matrix.zoom * app->matrix.space) / 2;
+	//point->pos.y -= (app->map.h_map * app->matrix.zoom * app->matrix.space) / 2;
 }

@@ -12,9 +12,10 @@
 
 #include <fcntl.h>
 #include <stdlib.h>
-#include "../lib/libftprintf/include/ft_printf.h"
+#include "../../lib/libftprintf/include/ft_printf.h"
+#include "../../lib/libftprintf/libft/libft.h"
 
-static void	generate_map(int row, int col, char *fp);
+static void	generate_map(int row, int col, int fp);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -32,13 +33,13 @@ static void	generate_map(int row, int col, char *fp);
 /* ************************************************************************** */
 int	main(int ac, char **av)
 {
-	char	*fd;
+	int		fd;
 	int		i;
 	int		j;
 	int		col;
 	int		row;
 
-	if (ac != 4)
+	if (ac != 3)
 	{
 		ft_printf("Usage: ./generathor [col] [row] \n");
 		return (1);
@@ -46,7 +47,7 @@ int	main(int ac, char **av)
 	col = ft_atoi(av[1]);
 	row = ft_atoi(av[2]);
 	fd = open("flat.fdf", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (!fd)
+	if (fd < 0)
 		return (1);
 	generate_map(row, col, fd);
 	close(fd);
@@ -72,7 +73,7 @@ int	main(int ac, char **av)
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-static void	generate_map(int row, int col, char *fd)
+static void	generate_map(int row, int col, int fd)
 {
 	int	i;
 	int	j;
@@ -93,3 +94,35 @@ static void	generate_map(int row, int col, char *fd)
 		i++;
 	}
 }
+
+/*void    put_zero(int row, int col, FILE *fp)
+{
+    int        i;
+    int        j;
+
+    i = 0;
+    while (i < row)
+    {
+        j = 0;
+        while (j < col)
+        {
+            if (j < col - 1)
+            {    
+                if (j % 2 == 0)
+                    fprintf(fp, "10 ");
+                else if (j % 3 == 0)
+                    fprintf(fp, "20 ");
+                else if (j % 5 == 0)
+                    fprintf(fp, "30 ");
+                else
+                    fprintf(fp, "0 ");
+            }
+            else
+                fprintf(fp, "0");
+            j++;
+        }
+        if (i < row - 1)
+            fprintf(fp, "\n");
+        i++;
+    }
+}*/

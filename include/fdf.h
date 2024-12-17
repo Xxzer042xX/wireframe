@@ -22,9 +22,9 @@
 /*                              DEFAULT VALUES                                */
 /* ************************************************************************** */
 //matrix
-# define SCALE 10.0f
-# define SCALE_STEP 1.0f
-# define SPACE 25.0f
+# define SCALE 17.0f
+# define SCALE_STEP 1.f
+# define SPACE 20.0f
 # define ISO_ANGLE 0.523599f
 
 //zoom
@@ -35,7 +35,7 @@
 //rotation
 # define ROT_STEP 0.1f
 
-//shift_map
+//shift_mapjj
 # define SHIFT_STEP 10.0f
 
 //sidebar_content
@@ -43,12 +43,12 @@
 # define PADDING_Y 40
 # define PADDING_OF_X 100
 # define PADDING_OF_Y 30
-# define SPACE_TITLE 40
-# define SPACE_CTRL 20
+# define SPACE_TITLE 40 
+# define SPACE_CTRL 30
 
 //window
-# define INIT_WIN_W 640
-# define INIT_WIN_H 360
+# define INIT_WIN_W 1050
+# define INIT_WIN_H 450
 # define MAX_WIN_W 1920
 # define MAX_WIN_H 1080
 
@@ -139,8 +139,9 @@ void		put_pixel_rgba(t_app *app, int x, int y, int color);
 /* ************************************************************************** */
 /*                              PRINT                                         */
 /* ************************************************************************** */
-void		print_live_values(t_app *app, int start_y);
-int			print_controls(t_app *app);
+void		print_live_values(t_app *app, int y_pos);
+int			print_controls(t_app *app, int y_pos);
+void		print_sidebar_content(t_app *app);
 
 /* ************************************************************************** */
 /*                              PARSING                                       */

@@ -37,9 +37,15 @@ static int	setup_new_window(t_app *app, int new_width, int new_height);
 int	resize_win(t_app *app)
 {
 	if (app->win.w_win == INIT_WIN_W && app->win.h_win == INIT_WIN_H)
+	{
+		app->matrix.scale = 2.5 * SCALE;
 		remake_window(app, MAX_WIN_W, MAX_WIN_H);
+	}
 	else
+	{
+		app->matrix.scale = SCALE;
 		remake_window(app, INIT_WIN_W, INIT_WIN_H);
+	}
 	return (SUCCESS);
 }
 
@@ -186,25 +192,15 @@ static void	resize_sidebar(t_app *app, int new_width, int new_height)
 
 	if (new_width == INIT_WIN_W && new_height == INIT_WIN_H)
 	{
-		app->sidebar.width = INIT_WIN_W / 4;
 		app->sidebar.height = INIT_WIN_H;
-		app->sidebar.x_pos = PADDING_X;
-		app->sidebar.y_pos = PADDING_Y;
 		app->sidebar.x_offset = PADDING_OF_X;
-		app->sidebar.y_offset = PADDING_OF_Y;
-		app->sidebar.y_space_title = SPACE_TITLE;
 		app->sidebar.y_space_ctrl = SPACE_CTRL;
 	}
 	else
 	{
 		scale_y = new_height / INIT_WIN_H;
-		app->sidebar.width = new_width / 10;
 		app->sidebar.height = new_height;
-		app->sidebar.x_pos = PADDING_X;
-		app->sidebar.y_pos = PADDING_Y;
 		app->sidebar.x_offset = PADDING_OF_X + PADDING_X;
-		app->sidebar.y_offset = PADDING_OF_Y;
-		app->sidebar.y_space_title = SPACE_TITLE;
 		app->sidebar.y_space_ctrl = SPACE_CTRL * scale_y;
 	}
 }

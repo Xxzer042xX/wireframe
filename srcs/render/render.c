@@ -49,8 +49,6 @@
 /* ************************************************************************** */
 int	render(t_app *app)
 {
-	int		next_y;
-
 	if (app->state == STATE_KILL)
 		mlx_loop_end(app->win.mlx);
 	if (!app->needs_update)
@@ -58,8 +56,7 @@ int	render(t_app *app)
 	draw_map(app);
 	draw_sidebar(app);
 	mlx_put_image_to_window(app->win.mlx, app->win.win, app->win.img, 0, 0);
-	next_y = print_controls(app);
-	print_live_values(app, next_y);
+	print_sidebar_content(app);
 	app->needs_update = 0;
 	return (SUCCESS);
 }
