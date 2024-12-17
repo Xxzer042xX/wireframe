@@ -42,7 +42,18 @@
 /* ************************************************************************** */
 void	zoom(t_app *app, float factor)
 {
-	app->matrix.zoom *= factor;
+	if (app->matrix.zoom * factor < Z_DEFAULT)
+	{
+		app->matrix.zoom = Z_DEFAULT;
+		return ;
+	}
+	else if (app->matrix.zoom * factor > Z_MAX)
+	{
+		app->matrix.zoom = Z_MAX;
+		return ;
+	}
+	else
+		app->matrix.zoom *= factor;
 	ft_memset(app->win.addr, 0, app->win.line_len * app->win.h_win);
 	app->needs_update = 1;
 	render(app);

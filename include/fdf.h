@@ -31,12 +31,12 @@
 # define Z_OUT 0.8f
 # define Z_IN 1.2f
 # define Z_DEFAULT 0.01f
-
+# define Z_MAX 1.0f
 //rotation
 # define ROT_STEP 0.1f
 
-//shift_mapjj
-# define SHIFT_STEP 10.0f
+//shift_map
+# define SHIFT_STEP 15.0f
 
 //sidebar_content
 # define PADDING_X 20

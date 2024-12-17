@@ -53,6 +53,7 @@ int	init_map(t_app *app, char *filename)
 	app->map.points = malloc(sizeof(t_point *) * app->map.h_map);
 	if (!app->map.points)
 		return (ERR_MALLOC);
+	ft_memset(app->map.points, 0, sizeof(t_point *) * app->map.h_map);
 	if (parse_file(app, filename) != SUCCESS)
 		return (ERR_FILE);
 	return (SUCCESS);

@@ -12,9 +12,10 @@
 
 #include "../../include/fdf.h"
 
-static void	remake_window(t_app *app, int new_width, int new_height);
-static void	resize_sidebar(t_app *app, int new_width, int new_height);
-static int	setup_new_window(t_app *app, int new_width, int new_height);
+static void	remake_window(t_app *app);
+static void	resize_sidebar(t_app *app);
+static int	setup_new_window(t_app *app);
+static void	center_map(t_app *app);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -38,14 +39,16 @@ int	resize_win(t_app *app)
 {
 	if (app->win.w_win == INIT_WIN_W && app->win.h_win == INIT_WIN_H)
 	{
-		app->matrix.scale = 2.5 * SCALE;
-		remake_window(app, MAX_WIN_W, MAX_WIN_H);
+		app->win.w_win = MAX_WIN_W;
+		app->win.h_win = MAX_WIN_H;
 	}
 	else
 	{
-		app->matrix.scale = SCALE;
-		remake_window(app, INIT_WIN_W, INIT_WIN_H);
+		app->win.w_win = INIT_WIN_W;
+		app->win.h_win = INIT_WIN_H;
+
 	}
+	remake_window(app);
 	return (SUCCESS);
 }
 
@@ -80,7 +83,7 @@ int	resize_win(t_app *app)
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-static void	remake_window(t_app *app, int new_width, int new_height)
+static void	remake_window(t_app *app)
 {
 	if (mlx_destroy_image(app->win.mlx, app->win.img) < 0)
 	{
@@ -92,50 +95,60 @@ static void	remake_window(t_app *app, int new_width, int new_height)
 		cleanup_app(app);
 		exit(error_exit(ERR_MLX));
 	}
-	app->win.w_win = new_width;
-	app->win.h_win = new_height;
-	app->matrix.shift_x = 0;
-	app->matrix.shift_y = 0;
-	setup_new_window(app, new_width, new_height);
-	resize_sidebar(app, new_width, new_height);
+	setup_new_window(app);
+	resize_sidebar(app);
+	center_map(app);
 	init_event(app);
 	app->needs_update = 1;
 	render(app);
 }
 
+static void	center_map(t_app *app)
+{
+	app->matrix.shift_x = 0;
+	app->matrix.shift_y = 0;
+	if (app->win.w_win == INIT_WIN_W && app->win.h_win == INIT_WIN_H)
+		app->matrix.scale = SCALE;
+	else
+		app->matrix.scale = 2.5 * SCALE;
+}
+
 /* ************************************************************************** */
 /*                                                                            */
-/*   Cette fonction redimensionne la fenêtre aux dimensions spécifiées en     */
-/*   suivant ces étapes :                                                     */
+/*   Cette fonction crée une nouvelle fenêtre MLX et configure ses            */
+/*   paramètres graphiques.                                                   */
 /*                                                                            */
-/*   1. Nettoyage des ressources existantes :                                 */
-/*      - Destruction de l'image MLX actuelle                                 */
-/*      - Destruction de la fenêtre actuelle                                  */
-/*      - En cas d'échec : nettoyage complet et sortie avec ERR_MLX           */
+/*   Processus d'initialisation :                                             */
+/*   1. Création de la fenêtre MLX avec les dimensions spécifiées             */
+/*      - Utilisation du titre définit par TITLE                              */
 /*                                                                            */
-/*   2. Mise à jour des paramètres :                                          */
-/*      - Nouvelles dimensions de fenêtre                                     */
-/*      - Réinitialisation des décalages (shift_x/y à 0)                      */
+/*   2. Création d'une nouvelle image MLX                                     */
+/*      - Dimensions adaptées à la taille de la fenêtre                       */
 /*                                                                            */
-/*   3. Recréation des éléments :                                             */
-/*      - Nouvelle fenêtre et image (setup_new_window)                        */
-/*      - Redimensionnement de la barre latérale                              */
-/*      - Réinitialisation des événements                                     */
+/*   3. Configuration du buffer d'image                                       */
+/*      - Récupération de l'adresse du buffer                                 */
+/*      - Initialisation des paramètres (bbp, line_len, endian)               */
 /*                                                                            */
-/*   4. Mise à jour de l'affichage :                                          */
-/*      - Activation du flag needs_update                                     */
-/*      - Rendu immédiat de la nouvelle vue                                   */
+/*   Gestion d'erreurs :                                                      */
+/*   - Vérification de la création de la fenêtre                              */
+/*   - Vérification de la création de l'image                                 */
+/*   - Vérification de l'accès au buffer                                      */
+/*   En cas d'échec : nettoyage des ressources et sortie avec ERR_MLX         */
 /*                                                                            */
 /*   Paramètres:                                                              */
-/*   - app : pointeur vers la structure principale                            */
-/*   - new_width : nouvelle largeur en pixels                                 */
-/*   - new_height : nouvelle hauteur en pixels                                */
+/*   - app : pointeur vers la structure principale de l'application           */
 /*                                                                            */
-/*   Ne retourne rien (void)                                                  */
+/*   Retourne:                                                                */
+/*   - SUCCESS si l'initialisation est réussie                                */
 /*                                                                            */
 /* ************************************************************************** */
-static int	setup_new_window(t_app *app, int new_width, int new_height)
+static int	setup_new_window(t_app *app)
 {
+	int	new_width;
+	int	new_height;
+
+	new_width = app->win.w_win;
+	new_height = app->win.h_win;
 	app->win.win = mlx_new_window(app->win.mlx, new_width, new_height, TITLE);
 	if (!app->win.win)
 	{
@@ -186,10 +199,14 @@ static int	setup_new_window(t_app *app, int new_width, int new_height)
 /*   Ne retourne rien (void)                                                  */
 /*                                                                            */
 /* ************************************************************************** */
-static void	resize_sidebar(t_app *app, int new_width, int new_height)
+static void	resize_sidebar(t_app *app)
 {
+	int	new_width;
+	int	new_height;
 	int	scale_y;
 
+	new_width = app->win.w_win;
+	new_height = app->win.h_win;
 	if (new_width == INIT_WIN_W && new_height == INIT_WIN_H)
 	{
 		app->sidebar.height = INIT_WIN_H;
