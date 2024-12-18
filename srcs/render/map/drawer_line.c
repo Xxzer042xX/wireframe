@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:44:42 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/10 21:36:15 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 02:20:46 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ static t_coord	init_delta(t_point start, t_point end)
 {
 	t_coord	delta;
 
-	delta.x = abs(end.pos.x - start.pos.x);
-	delta.y = abs(end.pos.y - start.pos.y);
+	delta.x = (int)fabs((double)(end.pos.x - start.pos.x));
+	delta.y = (int)fabs((double)(end.pos.y - start.pos.y));
 	return (delta);
 }
 
