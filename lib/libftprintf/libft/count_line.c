@@ -6,11 +6,11 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 08:35:09 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 08:35:09 by madelmen         ###   ########.fr       */
+/*   Updated: 2024/12/18 20:10:28 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/fdf.h"
+#include "libft.h"
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -42,7 +42,7 @@
 /*     * Ne contient que des lignes vides                                     */
 /*                                                                            */
 /* ************************************************************************** */
-int	count_line(t_app *app, const char *filename)
+int	count_line(const char *filename)
 {
 	int		fd;
 	int		count;
@@ -60,7 +60,6 @@ int	count_line(t_app *app, const char *filename)
 	}
 	close(fd);
 	if (count == 0)
-		return (ERR_FILE);
-	app->map.h_map = count;
-	return (SUCCESS);
+		return (0);
+	return (count);
 }

@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_data_sidebar.c                                :+:      :+:    :+:   */
+/*   init_sidebar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:39:31 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/16 14:47:06 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 19:01:55 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fdf.h"
+
+static int	init_ctrl_pairs(t_app *app);
+
 /* ************************************************************************** */
 /*                                                                            */
 /*   Cette fonction initialise les données de la barre latérale (sidebar)     */
@@ -45,7 +48,7 @@
 /*   pour les dimensions et espacements                                       */
 /*                                                                            */
 /* ************************************************************************** */
-int	init_data_sidebar(t_app *app)
+int	init_sidebar(t_app *app)
 {
 	app->sidebar.title = "Controls:";
 	app->sidebar.color.hex = GREY_50;
@@ -57,6 +60,12 @@ int	init_data_sidebar(t_app *app)
 	app->sidebar.y_pos = PADDING_Y;
 	app->sidebar.y_space_title = SPACE_TITLE;
 	app->sidebar.y_space_ctrl = SPACE_CTRL;
+	return (init_ctrl_pairs(app));
+}
+
+static int	init_ctrl_pairs(t_app *app)
+{
+	app->sidebar.title = "Controls:";
 	app->sidebar.ctrl_pairs = malloc(sizeof(t_control_pair) * 7);
 	if (!app->sidebar.ctrl_pairs)
 		return (ERR_MALLOC);

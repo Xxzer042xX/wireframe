@@ -6,11 +6,11 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 10:47:03 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/14 20:25:12 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 21:06:58 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/fdf.h"
+#include "../../include/fdf.h"
 
 static void	print_zoom_val(t_app *app, int x_pos, int x_value_pos, int y_pos);
 static void	print_rot_val(t_app *app, int x_pos, int x_value_pos, int y_pos);

@@ -6,11 +6,11 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 10:46:06 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/16 14:47:56 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 21:06:41 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/fdf.h"
+#include "../../include/fdf.h"
 
 static void	print_padding(t_app *app, int i, int y_pos);
 

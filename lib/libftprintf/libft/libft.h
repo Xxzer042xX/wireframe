@@ -6,7 +6,7 @@
 /*   By: mdelmeni <eljok87@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 21:17:47 by mdelmeni          #+#    #+#             */
-/*   Updated: 2024/12/08 14:53:30 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 20:12:17 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stddef.h>
+# include <fcntl.h>
+
+//get_next_line
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+# define OPEN_MAX 256
 
 //alias for ULL
 typedef unsigned long long	t_ull;
@@ -38,7 +46,9 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 //vip
+char	*get_next_line(int fd);
 int		ft_strcmp(const char *s1, const char *s2);
+int		count_line(const char *filename);
 void	ft_free_split(char **split, int i);
 
 /* ************************************************************************** */
@@ -102,10 +112,10 @@ typedef struct s_list
 }	t_list;
 
 t_list	*ft_lstnew(void *content);
-void	ft_lstadd_front(t_list **lst, t_list *new);
+void	ft_lstadd_front(t_list **lst, t_list *news);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstadd_back(t_list **lst, t_list *news);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));

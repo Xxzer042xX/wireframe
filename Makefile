@@ -25,26 +25,39 @@ MLX_LINUX = $(LIB_DIR)/minilibx-linux
 MLX_NAME = libmlx_Linux.a
 MLX = $(MLX_LINUX)/$(MLX_NAME)
 
-# Libft path
+# Libftprintf (libft)path
 LIBFT_DIR = $(LIB_DIR)/libftprintf
 LIBFT = $(LIBFT_DIR)/libftprintf.a
 
 ################################################################################
 #                              SOURCE FILES                                    #
 ################################################################################
-RENDER_SRC = $(wildcard $(SRC_DIR)/render/*.c) \
-			 $(wildcard $(SRC_DIR)/render/sidebar/*.c) \
-			 $(wildcard $(SRC_DIR)/render/map/*.c)
+
+CONTROLS_SRC = $(wildcard $(SRC_DIR)/controls/*.c)
+
+CORE_SRC = $(wildcard $(SRC_DIR)/core/*.c)
+
+DRAWER_SRC = $(wildcard $(SRC_DIR)/drawer/*.c) \
+			 $(wildcard $(SRC_DIR)/drawer/map/*.c) \
+			 $(wildcard $(SRC_DIR)/drawer/sidebar/*.c)
 
 EVENTS_SRC = $(wildcard $(SRC_DIR)/events/*.c)
-CORE_SRC = $(wildcard $(SRC_DIR)/core/*.c)
+
 PARSER_SRC = $(wildcard $(SRC_DIR)/parser/*.c)
-UTILS_SRC = $(wildcard $(SRC_DIR)/utils/*.c)
-CONTROLS_SRC = $(wildcard $(SRC_DIR)/controls/*.c)
+
+PRINTER_SRC = $(wildcard $(SRC_DIR)/printer/*.c)
+
+RENDER_SRC = $(wildcard $(SRC_DIR)/render/*.c)
+
 TRANSFORM_SRC = $(wildcard $(SRC_DIR)/transform/*.c)
+
+UTILS_SRC = $(wildcard $(SRC_DIR)/utils/*.c)
+
 MAIN_SRC = $(SRC_DIR)/fdf.c
 
-SRC = $(RENDER_SRC) $(EVENTS_SRC) $(CORE_SRC) $(PARSER_SRC) $(UTILS_SRC) $(CONTROLS_SRC) $(TRANSFORM_SRC) $(MAIN_SRC) 
+SRC = $(RENDER_SRC) $(EVENTS_SRC) $(CORE_SRC) $(PARSER_SRC) $(UTILS_SRC) \
+	  $(CONTROLS_SRC) $(TRANSFORM_SRC) $(MAIN_SRC) $(DRAWER_SRC) $(PRINTER_SRC)
+
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 ################################################################################
@@ -52,7 +65,7 @@ OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 ################################################################################
 
 # Headers
-INC = -I$(INC_DIR) -I$(INC_DIR)/core -I$(INC_DIR)/parser -I$(INC_DIR)/utils
+INC = -I$(INC_DIR) -I$(INC_DIR)/utils
 
 # Compiler and flags
 CC = cc
@@ -83,14 +96,18 @@ all: init $(MLX) $(LIBFT) $(NAME)
 init:
 	@mkdir -p $(BIN_DIR)
 	@mkdir -p $(OBJ_DIR)/core
-	@mkdir -p $(OBJ_DIR)/parser
+	@mkdir -p $(OBJ_DIR)/drawer
+	@mkdir -p $(OBJ_DIR)/drawer/map
+	@mkdir -p $(OBJ_DIR)/drawer/sidebar
+	@mkdir -p $(OBJ_DIR)/parser/
+	@mkdir -p $(OBJ_DIR)/printer
+
 	@mkdir -p $(OBJ_DIR)/utils
 	@mkdir -p $(OBJ_DIR)/events
 	@mkdir -p $(OBJ_DIR)/controls
 	@mkdir -p $(OBJ_DIR)/transform
 	@mkdir -p $(OBJ_DIR)/render
-	@mkdir -p $(OBJ_DIR)/render/sidebar
-	@mkdir -p $(OBJ_DIR)/render/map
+
 	@echo "$(GREEN)Project structure initialized$(RESET)"
 
 $(MLX):

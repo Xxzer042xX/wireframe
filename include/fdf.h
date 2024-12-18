@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:39:56 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/18 10:48:40 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 20:20:24 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 /* ************************************************************************** */
 //matrix
 # define SCALE 17.0f
-# define SCALE_STEP 1.f
+# define SCALE_STEP 20.0f
 # define SPACE 20.0f
 # define ISO_ANGLE 0.523599f
 
@@ -67,7 +67,6 @@
 /*                              HEADER UTILS                                  */
 /* ************************************************************************** */
 # include "utils/ft_structs.h"
-# include "utils/get_next_line.h"
 # include "utils/keycode.h"
 # include "utils/colors.h"
 
@@ -86,7 +85,7 @@ int			init_app(t_app *app, char *filename);
 int			init_map(t_app *app, char *filename);
 int			init_mlx(t_app *app);
 int			init_event(t_app *app);
-int			init_data_sidebar(t_app *app);
+int			init_sidebar(t_app *app);
 void		init_matrix(t_app *app);
 void		cleanup_app(t_app *app);
 
@@ -152,8 +151,6 @@ int			parse_file(t_app *app, char *filename);
 /* ************************************************************************** */
 /*                              UTILS                                         */
 /* ************************************************************************** */
-char		*get_next_line(int fd);
 int			error_exit(int error);
-int			count_line(t_app *app, const char *filename);
 
 #endif

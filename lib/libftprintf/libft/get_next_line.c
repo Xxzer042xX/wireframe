@@ -6,11 +6,11 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 12:06:59 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/11 08:22:18 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 19:59:47 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/utils/get_next_line.h"
+#include "libft.h"
 
 static char	*read_file(int fd, char *static_buffer);
 static char	*ft_extract_line(char *static_buffer);
@@ -112,7 +112,7 @@ static char	*read_file(int fd, char *static_buffer)
 	int		byte_read;
 
 	if (!static_buffer)
-		if (init_buffer(&static_buffer) != SUCCESS)
+		if (!init_buffer(&static_buffer))
 			return (NULL);
 	temp_buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!temp_buffer)
@@ -157,8 +157,8 @@ static int	init_buffer(char **static_buffer)
 {
 	*static_buffer = ft_calloc(1, 1);
 	if (!static_buffer)
-		return (ERR_MALLOC);
-	return (SUCCESS);
+		return (0);
+	return (1);
 }
 
 /* ************************************************************************** */

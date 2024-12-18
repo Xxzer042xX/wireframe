@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:33:36 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/17 22:21:51 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 19:01:26 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	init_app(t_app *app, char *filename)
 	status = init_event(app);
 	if (status != SUCCESS)
 		return (error_exit(status));
-	status = init_data_sidebar(app);
+	status = init_sidebar(app);
 	if (status != SUCCESS)
 		return (error_exit(status));
 	app->needs_update = 1;

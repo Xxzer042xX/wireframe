@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 23:44:49 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/14 22:28:06 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/18 14:14:40 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	resize_win(t_app *app)
 	{
 		app->win.w_win = INIT_WIN_W;
 		app->win.h_win = INIT_WIN_H;
-
 	}
 	remake_window(app);
 	return (SUCCESS);
@@ -85,16 +84,8 @@ int	resize_win(t_app *app)
 /* ************************************************************************** */
 static void	remake_window(t_app *app)
 {
-	if (mlx_destroy_image(app->win.mlx, app->win.img) < 0)
-	{
-		cleanup_app(app);
-		exit(error_exit(ERR_MLX));
-	}
-	if (mlx_destroy_window(app->win.mlx, app->win.win) < 0)
-	{
-		cleanup_app(app);
-		exit(error_exit(ERR_MLX));
-	}
+	mlx_destroy_image(app->win.mlx, app->win.img);
+	mlx_destroy_window(app->win.mlx, app->win.win);
 	setup_new_window(app);
 	resize_sidebar(app);
 	center_map(app);

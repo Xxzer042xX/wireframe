@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 09:12:35 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/12 09:12:35 by madelmen         ###   ########.fr       */
+/*   Updated: 2024/12/18 20:17:47 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@
 /* ************************************************************************** */
 int	init_map(t_app *app, char *filename)
 {
-	if (count_line(app, filename) != SUCCESS)
+	int	count;
+
+	count = count_line(filename);
+	if (count <= 0)
 		return (ERR_FILE);
+	app->map.h_map = count;
 	app->map.points = malloc(sizeof(t_point *) * app->map.h_map);
 	if (!app->map.points)
 		return (ERR_MALLOC);
