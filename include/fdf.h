@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:39:56 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/18 20:20:24 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/19 12:07:17 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@
 int			init_app(t_app *app, char *filename);
 int			init_map(t_app *app, char *filename);
 int			init_mlx(t_app *app);
-int			init_event(t_app *app);
 int			init_sidebar(t_app *app);
+void		init_event(t_app *app);
 void		init_matrix(t_app *app);
 void		cleanup_app(t_app *app);
 

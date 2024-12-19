@@ -6,7 +6,7 @@
 /*   By: madelmen <madelmen@student.42lausanne.ch   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 09:12:53 by madelmen          #+#    #+#             */
-/*   Updated: 2024/12/13 10:06:17 by madelmen         ###   LAUSANNE.ch       */
+/*   Updated: 2024/12/19 13:44:50 by madelmen         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,15 @@
 /*      - Masque 1L << 18                                                     */
 /*      - Gère le changement de taille de la fenêtre                          */
 /*                                                                            */
-/*   La fonction vérifie la réussite de chaque hook et retourne une erreur    */
-/*   si l'un d'entre eux échoue.                                              */
-/*                                                                            */
 /*   Paramètres:                                                              */
 /*   - app : pointeur vers la structure principale de l'application           */
 /*          utilisé pour accéder à la fenêtre MLX et aux données              */
 /*                                                                            */
-/*   Retourne:                                                                */
-/*   - SUCCESS si tous les hooks sont initialisés correctement                */
-/*   - ERR_MLX si l'initialisation d'un hook échoue                           */
-/*                                                                            */
 /* ************************************************************************** */
-int	init_event(t_app *app)
+void	init_event(t_app *app)
 {
-	if (mlx_hook(app->win.win, 2, 1L << 0, handle_key, (void *)app) == -1)
-		return (error_exit(ERR_MLX));
-	if (mlx_mouse_hook(app->win.win, handle_mouse, (void *)app) == -1)
-		return (error_exit(ERR_MLX));
-	if (mlx_hook(app->win.win, 17, 1L << 17, handle_exit, (void *)app) == -1)
-		return (error_exit(ERR_MLX));
-	if (mlx_hook(app->win.win, 25, 1L << 18, resize_win, (void *)app) == -1)
-		return (error_exit(ERR_MLX));
-	return (SUCCESS);
+	mlx_hook(app->win.win, 2, 1L << 0, handle_key, (void *)app);
+	mlx_mouse_hook(app->win.win, handle_mouse, (void *)app);
+	mlx_hook(app->win.win, 17, 1L << 17, handle_exit, (void *)app);
+	mlx_hook(app->win.win, 25, 1L << 18, resize_win, (void *)app);
 }
